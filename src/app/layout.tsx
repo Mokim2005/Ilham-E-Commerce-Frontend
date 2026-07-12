@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Fraunces, IBM_Plex_Mono } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
@@ -40,6 +41,7 @@ export default function RootLayout({
         <Navbar />
         <main>{children}</main>
         <Footer />
+        <Toaster position="top-center" richColors />
       </body>
     </html>
   );
