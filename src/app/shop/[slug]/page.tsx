@@ -14,9 +14,9 @@ interface ProductPageProps {
 export async function generateMetadata({ params }: ProductPageProps) {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
-  if (!product) return { title: "Product Not Found — Inkwell" };
+  if (!product) return { title: "Product Not Found — Ilham" };
   return {
-    title: `${product.name} — Inkwell`,
+    title: `${product.name} — Ilham`,
     description: product.description,
   };
 }
@@ -49,7 +49,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {/* Right: Info + Add to Cart */}
             <div className="flex flex-col gap-6">
               <ProductInfo product={product} />
-              <AddToCartBox inStock={product.inStock} />
+              <AddToCartBox product={product} />
             </div>
           </div>
         </div>

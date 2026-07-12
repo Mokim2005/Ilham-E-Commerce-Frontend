@@ -12,7 +12,7 @@ import type { ProductFilters } from "@/lib/types/product";
 const ITEMS_PER_PAGE = 12;
 
 export const metadata = {
-  title: "Shop — Inkwell",
+  title: "Shop — Ilham",
   description:
     "Browse our full collection of stationery, notebooks, pens, art supplies, and more.",
 };

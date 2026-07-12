@@ -4,9 +4,12 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, ShoppingBag, Star } from "lucide-react";
+import { Heart, ShoppingBag, Star, Check } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { formatPrice, getDiscountPercent } from "@/lib/utils/format-price";
+import { useWishlistStore } from "@/lib/store/wishlist-store";
+import { useCartStore } from "@/lib/store/cart-store";
 import type { Product } from "@/lib/types/product";
 
 interface ProductCardProps {
@@ -14,15 +17,28 @@ interface ProductCardProps {
   className?: string;
 }
 
-function formatPrice(amount: number): string {
-  return `\u09F3${amount.toLocaleString("en-IN")}`;
-}
-
 export function ProductCard({ product, className }: ProductCardProps) {
-  const [wishlisted, setWishlisted] = useState(false);
+  const addItem = useWishlistStore((s) => s.addItem);
+  const removeItem = useWishlistStore((s) => s.removeItem);
+  const wishlisted = useWishlistStore((s) =>
+    s.items.some((item) => item.slug === product.slug),
+  );
+  const addCartItem = useCartStore((s) => s.addItem);
+  const [added, setAdded] = useState(false);
 
   const outOfStock = !product.inStock;
-  const hasDiscount = !!product.discount && product.discount > 0;
+  const hasDiscount = !!product.originalPrice && product.originalPrice > product.price;
+  const discountPct = hasDiscount
+    ? getDiscountPercent(product.originalPrice!, product.price)
+    : product.discount ?? 0;
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (outOfStock) return;
+    addCartItem(product, 1);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
+  };
 
   return (
     <Link
@@ -61,9 +77,9 @@ export function ProductCard({ product, className }: ProductCardProps) {
                 Best Seller
               </Badge>
             )}
-            {hasDiscount && (
+            {hasDiscount && discountPct > 0 && (
               <Badge className="bg-rose px-2 py-0.5 text-[10px] font-semibold text-white">
-                -{product.discount}%
+                -{discountPct}%
               </Badge>
             )}
             {outOfStock && (
@@ -78,7 +94,11 @@ export function ProductCard({ product, className }: ProductCardProps) {
             type="button"
             onClick={(e) => {
               e.preventDefault();
-              setWishlisted((prev) => !prev);
+              if (wishlisted) {
+                removeItem(product.slug);
+              } else {
+                addItem(product);
+              }
             }}
             aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
             className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm text-ink/60 transition-all hover:bg-white hover:text-ink opacity-0 group-hover:opacity-100"
@@ -94,14 +114,26 @@ export function ProductCard({ product, className }: ProductCardProps) {
           {/* Quick add-to-cart — bottom-center on image */}
           <button
             type="button"
-            onClick={(e) => {
-              e.preventDefault();
-            }}
+            onClick={handleAddToCart}
             aria-label={`Add ${product.name} to cart`}
-            className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-xs font-medium text-white shadow-lg transition-all duration-300 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 hover:bg-teal"
+            className={cn(
+              "absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium text-white shadow-lg transition-all duration-300 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0",
+              added
+                ? "bg-teal"
+                : "bg-ink hover:bg-teal",
+            )}
           >
-            <ShoppingBag className="h-3.5 w-3.5" />
-            Quick Add
+            {added ? (
+              <>
+                <Check className="h-3.5 w-3.5" />
+                Added
+              </>
+            ) : (
+              <>
+                <ShoppingBag className="h-3.5 w-3.5" />
+                Quick Add
+              </>
+            )}
           </button>
         </div>
 
@@ -127,7 +159,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
             </div>
           )}
 
-          {/* Price row */}
+          {/* Price row — consistent pattern */}
           <div className="mt-2 flex items-baseline gap-2">
             <span
               className={cn(
@@ -137,9 +169,9 @@ export function ProductCard({ product, className }: ProductCardProps) {
             >
               {formatPrice(product.price)}
             </span>
-            {product.originalPrice && (
+            {hasDiscount && (
               <span className="text-xs text-muted-foreground line-through">
-                {formatPrice(product.originalPrice)}
+                {formatPrice(product.originalPrice!)}
               </span>
             )}
           </div>

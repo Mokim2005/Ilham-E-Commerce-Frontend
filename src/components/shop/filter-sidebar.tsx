@@ -1,13 +1,14 @@
 // Filter Sidebar — category checkboxes, price range, availability toggle. Client component.
 "use client";
 
+import { useState, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
+import { formatPrice } from "@/lib/utils/format-price";
 import type { Category } from "@/lib/types/category";
 
 interface FilterSidebarProps {
@@ -30,6 +31,35 @@ export function FilterSidebar({
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  // Local drag state — updates instantly, no URL push until release
+  const [localMin, setLocalMin] = useState(minPrice ?? priceRange[0]);
+  const [localMax, setLocalMax] = useState(maxPrice ?? priceRange[1]);
+
+  // Sync local state when URL params change externally
+  useEffect(() => {
+    setLocalMin(minPrice ?? priceRange[0]);
+    setLocalMax(maxPrice ?? priceRange[1]);
+  }, [minPrice, maxPrice, priceRange]);
+
+  const pushPriceToUrl = useCallback(
+    (min: number, max: number) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (min > priceRange[0]) {
+        params.set("min", String(min));
+      } else {
+        params.delete("min");
+      }
+      if (max < priceRange[1]) {
+        params.set("max", String(max));
+      } else {
+        params.delete("max");
+      }
+      params.delete("page");
+      router.push(`/shop?${params.toString()}`);
+    },
+    [router, searchParams, priceRange],
+  );
+
   const updateParam = useCallback(
     (key: string, value: string | null) => {
       const params = new URLSearchParams(searchParams.toString());
@@ -38,15 +68,11 @@ export function FilterSidebar({
       } else {
         params.set(key, value);
       }
-      // Reset to page 1 when filters change
       params.delete("page");
       router.push(`/shop?${params.toString()}`);
     },
     [router, searchParams],
   );
-
-  const currentMin = minPrice ?? priceRange[0];
-  const currentMax = maxPrice ?? priceRange[1];
 
   return (
     <div className="space-y-6">
@@ -73,7 +99,7 @@ export function FilterSidebar({
 
       <Separator />
 
-      {/* Price Range */}
+      {/* Price Range — local state during drag, URL update on commit */}
       <div>
         <h3 className="mb-3 text-sm font-semibold text-ink">
           Price Range
@@ -83,26 +109,20 @@ export function FilterSidebar({
             min={priceRange[0]}
             max={priceRange[1]}
             step={50}
-            value={[currentMin, currentMax]}
+            value={[localMin, localMax]}
             onValueChange={([min, max]) => {
-              const params = new URLSearchParams(searchParams.toString());
-              if (min > priceRange[0]) {
-                params.set("min", String(min));
-              } else {
-                params.delete("min");
-              }
-              if (max < priceRange[1]) {
-                params.set("max", String(max));
-              } else {
-                params.delete("max");
-              }
-              params.delete("page");
-              router.push(`/shop?${params.toString()}`);
+              // Continuous updates — visual only, no URL push
+              setLocalMin(min);
+              setLocalMax(max);
+            }}
+            onValueCommit={([min, max]) => {
+              // Fired once on release — now push to URL
+              pushPriceToUrl(min, max);
             }}
           />
           <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
-            <span>&#x09F3;{currentMin.toLocaleString("en-IN")}</span>
-            <span>&#x09F3;{currentMax.toLocaleString("en-IN")}</span>
+            <span>{formatPrice(localMin)}</span>
+            <span>{formatPrice(localMax)}</span>
           </div>
         </div>
       </div>

@@ -1,24 +1,35 @@
-// Product Info — name, brand, SKU, price, stock, description. Server component.
+// Product Info — name, brand, SKU, category, price, stock, description. Server component.
+import Link from "next/link";
 import { Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { formatPrice, getDiscountPercent } from "@/lib/utils/format-price";
 import type { Product } from "@/lib/types/product";
 
 interface ProductInfoProps {
   product: Product;
 }
 
-function formatPrice(amount: number): string {
-  return `\u09F3${amount.toLocaleString("en-IN")}`;
-}
-
 export function ProductInfo({ product }: ProductInfoProps) {
+  const hasDiscount =
+    !!product.originalPrice && product.originalPrice > product.price;
+  const discountPct = hasDiscount
+    ? getDiscountPercent(product.originalPrice!, product.price)
+    : product.discount ?? 0;
+
+  const stock = product.stock ?? (product.inStock ? 99 : 0);
+  const isOutOfStock = stock === 0;
+  const isLowStock = stock > 0 && stock < 10;
+
   return (
     <div className="space-y-5">
-      {/* Breadcrumb-style category */}
-      <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+      {/* Breadcrumb-style category — linked back to shop */}
+      <Link
+        href={`/shop?category=${product.categorySlug}`}
+        className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-teal"
+      >
         {product.category}
-      </p>
+      </Link>
 
       {/* Name + badges */}
       <div>
@@ -39,40 +50,48 @@ export function ProductInfo({ product }: ProductInfoProps) {
       </div>
 
       {/* Rating */}
-      <div className="flex items-center gap-2">
-        <div className="flex items-center gap-0.5">
-          {[...Array(5)].map((_, i) => (
-            <Star
-              key={i}
-              className={`h-4 w-4 ${
-                i < Math.round(product.rating)
-                  ? "fill-amber-400 text-amber-400"
-                  : "text-muted-foreground/30"
-              }`}
-            />
-          ))}
+      {product.reviewCount > 0 && (
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-0.5">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className={`h-4 w-4 ${
+                  i < Math.round(product.rating)
+                    ? "fill-amber-400 text-amber-400"
+                    : "text-muted-foreground/30"
+                }`}
+              />
+            ))}
+          </div>
+          <span className="text-sm font-medium text-ink">
+            {product.rating}
+          </span>
+          <span className="text-sm text-muted-foreground">
+            ({product.reviewCount} reviews)
+          </span>
         </div>
-        <span className="text-sm font-medium text-ink">{product.rating}</span>
-        <span className="text-sm text-muted-foreground">
-          ({product.reviewCount} reviews)
-        </span>
-      </div>
+      )}
 
       <Separator />
 
-      {/* Price */}
+      {/* Price — consistent discount pattern */}
       <div className="flex items-baseline gap-3">
-        <span className="text-3xl font-bold text-ink">
+        <span
+          className={`text-3xl font-bold ${hasDiscount ? "text-rose" : "text-ink"}`}
+        >
           {formatPrice(product.price)}
         </span>
-        {product.originalPrice && (
+        {hasDiscount && (
           <>
             <span className="text-lg text-muted-foreground line-through">
-              {formatPrice(product.originalPrice)}
+              {formatPrice(product.originalPrice!)}
             </span>
-            <Badge variant="destructive" className="text-xs">
-              -{product.discount}%
-            </Badge>
+            {discountPct > 0 && (
+              <Badge variant="destructive" className="text-xs">
+                -{discountPct}%
+              </Badge>
+            )}
           </>
         )}
       </div>
@@ -86,7 +105,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
       <Separator />
 
-      {/* Meta */}
+      {/* Meta grid */}
       <div className="grid grid-cols-2 gap-3 text-sm">
         {product.brand && (
           <div>
@@ -101,16 +120,35 @@ export function ProductInfo({ product }: ProductInfoProps) {
           </div>
         )}
         <div>
-          <span className="text-muted-foreground">Availability: </span>
-          <span
-            className={`font-medium ${
-              product.inStock ? "text-teal" : "text-rose"
-            }`}
+          <span className="text-muted-foreground">Category: </span>
+          <Link
+            href={`/shop?category=${product.categorySlug}`}
+            className="font-medium text-teal transition-colors hover:text-teal-light"
           >
-            {product.inStock ? "In Stock" : "Out of Stock"}
-          </span>
+            {product.category}
+          </Link>
         </div>
+        {product.unit && (
+          <div>
+            <span className="text-muted-foreground">Unit: </span>
+            <span className="font-medium text-ink">{product.unit}</span>
+          </div>
+        )}
       </div>
+
+      {/* Stock status */}
+      <div className="flex items-center gap-2 text-sm">
+        <span className="text-muted-foreground">Availability: </span>
+        {isOutOfStock ? (
+          <span className="font-semibold text-rose">Out of Stock</span>
+        ) : isLowStock ? (
+          <span className="font-semibold text-rose">Only {stock} left!</span>
+        ) : (
+          <span className="font-medium text-teal">In Stock ({stock} available)</span>
+        )}
+      </div>
+
+      <Separator />
 
       {/* Description */}
       {product.description && (

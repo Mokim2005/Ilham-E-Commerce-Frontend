@@ -29,6 +29,7 @@ export const allProducts: Product[] = [
     brand: "Inkwell Original",
     sku: "INK-NB-001",
     unit: "Piece",
+    stock: 45,
   },
   {
     id: "fp-002",
@@ -51,6 +52,7 @@ export const allProducts: Product[] = [
     brand: "Sakura Art",
     sku: "SAK-PN-012",
     unit: "Set",
+    stock: 8,
   },
   {
     id: "fp-003",
@@ -68,6 +70,7 @@ export const allProducts: Product[] = [
     brand: "Inkwell Original",
     sku: "INK-PP-003",
     unit: "Roll",
+    stock: 120,
   },
   {
     id: "fp-004",
@@ -88,6 +91,7 @@ export const allProducts: Product[] = [
     brand: "Inkwell Original",
     sku: "INK-OS-004",
     unit: "Set",
+    stock: 3,
   },
   {
     id: "fp-005",
@@ -106,6 +110,7 @@ export const allProducts: Product[] = [
     brand: "ArtLine Pro",
     sku: "ALP-AS-024",
     unit: "Set",
+    stock: 22,
   },
   {
     id: "fp-006",
@@ -126,6 +131,7 @@ export const allProducts: Product[] = [
     brand: "Inkwell Original",
     sku: "INK-PN-008",
     unit: "Set",
+    stock: 65,
   },
   {
     id: "bsw-001",
@@ -144,6 +150,7 @@ export const allProducts: Product[] = [
     brand: "Inkwell Original",
     sku: "INK-NB-010",
     unit: "Piece",
+    stock: 200,
   },
   {
     id: "bsw-002",
@@ -161,6 +168,7 @@ export const allProducts: Product[] = [
     brand: "Inkwell Original",
     sku: "INK-OS-020",
     unit: "Pack",
+    stock: 150,
   },
   {
     id: "bsw-003",
@@ -179,6 +187,7 @@ export const allProducts: Product[] = [
     brand: "ArtLine Pro",
     sku: "ALP-PN-004",
     unit: "Set",
+    stock: 95,
   },
   {
     id: "bsw-004",
@@ -196,6 +205,7 @@ export const allProducts: Product[] = [
     brand: "Inkwell Original",
     sku: "INK-PP-040",
     unit: "Ream",
+    stock: 300,
   },
   {
     id: "bsw-005",
@@ -213,6 +223,7 @@ export const allProducts: Product[] = [
     brand: "Inkwell Original",
     sku: "INK-SE-005",
     unit: "Set",
+    stock: 75,
   },
   {
     id: "bsw-006",
@@ -231,6 +242,7 @@ export const allProducts: Product[] = [
     brand: "Inkwell Original",
     sku: "INK-AS-032",
     unit: "Pack",
+    stock: 0,
   },
   {
     id: "bsm-001",
@@ -249,6 +261,7 @@ export const allProducts: Product[] = [
     brand: "Inkwell Original",
     sku: "INK-NB-050",
     unit: "Piece",
+    stock: 55,
   },
   {
     id: "bsm-002",
@@ -266,6 +279,7 @@ export const allProducts: Product[] = [
     brand: "ArtLine Pro",
     sku: "ALP-PN-050",
     unit: "Set",
+    stock: 12,
   },
   {
     id: "bsm-003",
@@ -284,6 +298,7 @@ export const allProducts: Product[] = [
     brand: "ArtLine Pro",
     sku: "ALP-AS-050",
     unit: "Piece",
+    stock: 40,
   },
   {
     id: "bsm-004",
@@ -301,6 +316,7 @@ export const allProducts: Product[] = [
     brand: "Inkwell Original",
     sku: "INK-OS-060",
     unit: "Set",
+    stock: 85,
   },
   {
     id: "bsm-005",
@@ -319,6 +335,7 @@ export const allProducts: Product[] = [
     brand: "Inkwell Original",
     sku: "INK-SE-010",
     unit: "Pack",
+    stock: 180,
   },
   {
     id: "bsm-006",
@@ -336,6 +353,7 @@ export const allProducts: Product[] = [
     brand: "Inkwell Original",
     sku: "INK-PP-060",
     unit: "Pack",
+    stock: 110,
   },
   {
     id: "na-001",
@@ -354,6 +372,7 @@ export const allProducts: Product[] = [
     brand: "Inkwell Original",
     sku: "INK-SE-018",
     unit: "Set",
+    stock: 6,
   },
   {
     id: "na-002",
@@ -372,6 +391,7 @@ export const allProducts: Product[] = [
     brand: "Inkwell Original",
     sku: "INK-NB-080",
     unit: "Piece",
+    stock: 28,
   },
   {
     id: "na-003",
@@ -390,6 +410,7 @@ export const allProducts: Product[] = [
     brand: "Sakura Art",
     sku: "SAK-PN-030",
     unit: "Set",
+    stock: 18,
   },
   {
     id: "na-004",
@@ -408,6 +429,7 @@ export const allProducts: Product[] = [
     brand: "ArtLine Pro",
     sku: "ALP-AS-080",
     unit: "Set",
+    stock: 14,
   },
   {
     id: "na-005",
@@ -426,6 +448,7 @@ export const allProducts: Product[] = [
     brand: "Inkwell Original",
     sku: "INK-PP-080",
     unit: "Piece",
+    stock: 5,
   },
   {
     id: "na-006",
@@ -444,6 +467,7 @@ export const allProducts: Product[] = [
     brand: "Inkwell Original",
     sku: "INK-OS-080",
     unit: "Pack",
+    stock: 35,
   },
 ];
 

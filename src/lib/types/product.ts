@@ -19,6 +19,7 @@ export interface Product {
   brand?: string;
   sku?: string;
   unit?: string;
+  stock?: number;
 }
 
 export interface ProductFilters {

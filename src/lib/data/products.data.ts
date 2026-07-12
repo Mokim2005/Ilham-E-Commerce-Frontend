@@ -2,10 +2,13 @@
 
 import type { Product, ProductFilters } from "@/lib/types/product";
 import { allProducts } from "@/lib/mock-data/products";
+import { delay } from "@/lib/utils/delay";
 
 export async function getAllProducts(
   filters?: ProductFilters,
 ): Promise<Product[]> {
+  await delay(1000); // TODO: remove once real API is connected — simulates network latency
+
   let results = [...allProducts];
 
   if (filters?.category) {
