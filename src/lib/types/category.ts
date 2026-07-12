@@ -5,6 +5,8 @@ export interface Category {
   name: string;
   slug: string;
   icon: string;
-  productCount: number;
+  productCount?: number;
   image: string;
+  description?: string;
+  isVisible: boolean;
 }

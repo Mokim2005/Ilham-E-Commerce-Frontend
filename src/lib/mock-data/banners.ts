@@ -1,34 +1,89 @@
-// Mock banner and promotional data for the stationery store homepage.
+import type { Banner } from "@/lib/types/banner";
 
-export interface Banner {
-  id: string;
-  title: string;
-  subtitle: string;
-  ctaText: string;
-  ctaLink: string;
-  bgColor: string;
-  accentColor: string;
-  discount?: number;
-}
+export const banners: Banner[] = [
+  {
+    id: "hero-001",
+    title: "Write Your Story",
+    subtitle:
+      "Premium stationery crafted for thinkers, dreamers, and doers. From fountain pens to handmade notebooks — find the tools that inspire.",
+    image: "/images/banners/hero-write-story.jpg",
+    link: "/shop",
+    isVisible: true,
+    position: 1,
+    ctaText: "Shop the Collection",
+    ctaLink: "/shop",
+    bgColor: "#FAF8F3",
+    accentColor: "#2F6F62",
+  },
+  {
+    id: "promo-001",
+    title: "Mid-Year Clearance",
+    subtitle: "Up to 40% off on selected notebooks, pens & art supplies. Limited time only.",
+    image: "/images/banners/mid-year-clearance.jpg",
+    link: "/sale",
+    isVisible: true,
+    position: 2,
+    ctaText: "Grab the Deal",
+    ctaLink: "/sale",
+    bgColor: "#21232B",
+    accentColor: "#C9707A",
+    discount: 40,
+  },
+  {
+    id: "promo-002",
+    title: "Back to School",
+    subtitle: "Everything your child needs for the new term. Bundles starting at ৳280.",
+    image: "/images/banners/back-to-school.jpg",
+    link: "/category/school-essentials",
+    isVisible: true,
+    position: 3,
+    ctaText: "Shop Now",
+    ctaLink: "/category/school-essentials",
+    bgColor: "#F0F4F8",
+    accentColor: "#2F6F62",
+    discount: 30,
+  },
+  {
+    id: "promo-003",
+    title: "Free Delivery Over ৳1500",
+    subtitle: "Enjoy free shipping on orders above ৳1,500. No minimum item requirement.",
+    image: "/images/banners/free-delivery.jpg",
+    link: "/shop",
+    isVisible: true,
+    position: 4,
+    ctaText: "Start Shopping",
+    ctaLink: "/shop",
+    bgColor: "#E8F5E9",
+    accentColor: "#2E7D32",
+  },
+  {
+    id: "promo-004",
+    title: "Artist Spotlight",
+    subtitle: "Discover our curated collection of art supplies from Sakura, ArtLine Pro, and more.",
+    image: "/images/banners/artist-spotlight.jpg",
+    link: "/category/art-supplies",
+    isVisible: true,
+    position: 5,
+    ctaText: "Explore Collection",
+    ctaLink: "/category/art-supplies",
+    bgColor: "#FFF3E0",
+    accentColor: "#E65100",
+    discount: 20,
+  },
+  {
+    id: "promo-005",
+    title: "Gift a Journal",
+    subtitle: "Handpicked journals and diaries for the writer in your life. Gift wrapping available.",
+    image: "/images/banners/gift-journal.jpg",
+    link: "/category/notebooks",
+    isVisible: false,
+    position: 6,
+    ctaText: "Browse Journals",
+    ctaLink: "/category/notebooks",
+    bgColor: "#F3E5F5",
+    accentColor: "#7B1FA2",
+  },
+];
 
-export const heroBanner: Banner = {
-  id: "hero-001",
-  title: "Write Your Story",
-  subtitle:
-    "Premium stationery crafted for thinkers, dreamers, and doers. From fountain pens to handmade notebooks — find the tools that inspire.",
-  ctaText: "Shop the Collection",
-  ctaLink: "/shop",
-  bgColor: "#FAF8F3",
-  accentColor: "#2F6F62",
-};
-
-export const promoBanner: Banner = {
-  id: "promo-001",
-  title: "Mid-Year Clearance",
-  subtitle: "Up to 40% off on selected notebooks, pens & art supplies. Limited time only.",
-  ctaText: "Grab the Deal",
-  ctaLink: "/sale",
-  bgColor: "#21232B",
-  accentColor: "#C9707A",
-  discount: 40,
-};
+export const heroBanner = banners.find((b) => b.id === "hero-001")!;
+export const promoBanner = banners.find((b) => b.id === "promo-001")!;

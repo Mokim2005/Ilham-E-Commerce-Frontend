@@ -1,13 +1,4 @@
-// Mock category data for the stationery store homepage.
-
-export interface Category {
-  id: string;
-  name: string;
-  slug: string;
-  icon: string;
-  productCount: number;
-  image: string;
-}
+import type { Category } from "@/lib/types/category";
 
 export const categories: Category[] = [
   {
@@ -17,6 +8,8 @@ export const categories: Category[] = [
     icon: "BookOpen",
     productCount: 124,
     image: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=600&h=400&fit=crop",
+    description: "Journals, diaries, spiral notebooks, and more for every writing need.",
+    isVisible: true,
   },
   {
     id: "cat-002",
@@ -25,6 +18,8 @@ export const categories: Category[] = [
     icon: "Pen",
     productCount: 89,
     image: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=600&h=400&fit=crop",
+    description: "Fountain pens, gel pens, brush pens, and calligraphy sets.",
+    isVisible: true,
   },
   {
     id: "cat-003",
@@ -33,6 +28,8 @@ export const categories: Category[] = [
     icon: "FileText",
     productCount: 67,
     image: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=600&h=400&fit=crop",
+    description: "Copy paper, craft paper, origami paper, and specialty paper products.",
+    isVisible: true,
   },
   {
     id: "cat-004",
@@ -41,6 +38,8 @@ export const categories: Category[] = [
     icon: "Printer",
     productCount: 156,
     image: "https://images.unsplash.com/photo-1589582754973-0d6a8d4ab790?w=600&h=400&fit=crop",
+    description: "Desk organizers, sticky notes, whiteboard markers, and more for your workspace.",
+    isVisible: true,
   },
   {
     id: "cat-005",
@@ -49,6 +48,8 @@ export const categories: Category[] = [
     icon: "Palette",
     productCount: 98,
     image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=600&h=400&fit=crop",
+    description: "Watercolors, acrylics, sketch books, and drawing tools for artists.",
+    isVisible: true,
   },
   {
     id: "cat-006",
@@ -57,5 +58,27 @@ export const categories: Category[] = [
     icon: "GraduationCap",
     productCount: 143,
     image: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=600&h=400&fit=crop",
+    description: "Geometry boxes, erasers, exercise books, and everything students need.",
+    isVisible: true,
+  },
+  {
+    id: "cat-007",
+    name: "Gift Sets",
+    slug: "gift-sets",
+    icon: "Gift",
+    productCount: 18,
+    image: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=600&h=400&fit=crop",
+    description: "Curated stationery gift sets perfect for birthdays, holidays, and special occasions.",
+    isVisible: true,
+  },
+  {
+    id: "cat-008",
+    name: "Clearance",
+    slug: "clearance",
+    icon: "Tag",
+    productCount: 32,
+    image: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=600&h=400&fit=crop",
+    description: "Last chance deals on selected stationery items. Limited stock available.",
+    isVisible: false,
   },
 ];

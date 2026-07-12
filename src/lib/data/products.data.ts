@@ -78,3 +78,23 @@ export async function getRelatedProducts(
     .filter((p) => p.categorySlug === category && p.slug !== excludeSlug)
     .slice(0, 4);
 }
+
+export async function createProduct(data: Omit<Product, "id">): Promise<Product> {
+  const newProduct: Product = { ...data, id: `prod-${Date.now()}` };
+  allProducts.push(newProduct);
+  return newProduct;
+}
+
+export async function updateProduct(id: string, data: Partial<Product>): Promise<Product | null> {
+  const index = allProducts.findIndex((p) => p.id === id);
+  if (index === -1) return null;
+  allProducts[index] = { ...allProducts[index], ...data };
+  return allProducts[index];
+}
+
+export async function deleteProduct(id: string): Promise<boolean> {
+  const index = allProducts.findIndex((p) => p.id === id);
+  if (index === -1) return false;
+  allProducts.splice(index, 1);
+  return true;
+}
