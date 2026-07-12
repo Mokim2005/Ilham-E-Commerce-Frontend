@@ -1,30 +1,30 @@
-// Values/Why Us — 4 value cards with icons. Used on the About page.
-import { ShieldCheck, Truck, CreditCard, BadgeCheck } from "lucide-react";
+// Values / Why Us — 4 value cards with specific, varied copy.
+import { Handshake, Lightbulb, Truck, Wallet } from "lucide-react";
 
 const values = [
   {
-    icon: ShieldCheck,
-    title: "Genuine Products",
+    icon: Handshake,
+    title: "Hand-Tested Promise",
     description:
-      "Every item is sourced from authorized distributors. No knockoffs, no compromises — just the real thing.",
+      "Every product is tried by our team before it reaches the catalog. If it doesn't meet our standard, it doesn't ship — no exceptions.",
   },
   {
-    icon: CreditCard,
-    title: "Affordable Pricing",
+    icon: Lightbulb,
+    title: "Curated, Not Cluttered",
     description:
-      "We keep margins slim so you get premium stationery at prices that make sense for the Bangladeshi market.",
+      "We don't stock everything. We stock the right things. Our 500+ products are selected from thousands of options so you don't have to wade through junk.",
   },
   {
     icon: Truck,
-    title: "Fast Delivery",
+    title: "Same-Day Dispatch",
     description:
-      "Same-day dispatch for orders placed before 3 PM. Dhaka delivery in 1-2 days, nationwide in 3-5.",
+      "Order before 3 PM and we ship it the same day. Dhaka in 1–2 days, anywhere in Bangladesh in 3–5 — and free delivery on orders over ৳2,000.",
   },
   {
-    icon: BadgeCheck,
-    title: "Easy Manual Payment",
+    icon: Wallet,
+    title: "Pay Your Way",
     description:
-      "Pay with bKash, Nagad, or bank transfer. Simple, secure, and no hidden fees.",
+      "bKash, Nagad, bank transfer, or cash on delivery — whatever's convenient for you. No hidden charges, no surprise fees at checkout.",
   },
 ];
 
@@ -34,10 +34,10 @@ export function ValuesSection() {
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <div className="mb-10 max-w-2xl text-center mx-auto">
           <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.2em] text-teal-light">
-            Why Inkwell
+            Why Shop With Us
           </p>
           <h2 className="font-serif text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Built on Trust, Delivered with Care
+            The Ilham Difference
           </h2>
         </div>
 

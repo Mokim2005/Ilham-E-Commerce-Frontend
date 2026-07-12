@@ -21,6 +21,47 @@ export async function getAllReviews(
   );
 }
 
+export async function getReviewsByProductId(productId: string): Promise<Review[]> {
+  return reviews
+    .filter((r) => r.productId === productId)
+    .sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
+}
+
+export async function createReview(input: {
+  productId: string;
+  productName: string;
+  customerId: string;
+  customerName: string;
+  rating: number;
+  comment: string;
+}): Promise<Review> {
+  const review: Review = {
+    id: `rev-${Date.now()}`,
+    productId: input.productId,
+    productName: input.productName,
+    customerId: input.customerId,
+    customerName: input.customerName,
+    rating: input.rating,
+    comment: input.comment,
+    createdAt: new Date().toISOString(),
+  };
+
+  reviews.unshift(review);
+  return review;
+}
+
+export async function updateReview(
+  id: string,
+  data: Partial<Pick<Review, "rating" | "comment">>,
+): Promise<Review | null> {
+  const index = reviews.findIndex((r) => r.id === id);
+  if (index === -1) return null;
+  reviews[index] = { ...reviews[index], ...data };
+  return reviews[index];
+}
+
 export async function deleteReview(id: string): Promise<boolean> {
   const index = reviews.findIndex((r) => r.id === id);
   if (index === -1) return false;

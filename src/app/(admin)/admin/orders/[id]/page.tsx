@@ -251,6 +251,12 @@ export default function OrderDetailPage() {
                 <span className="text-muted-foreground">Subtotal</span>
                 <span>{formatPrice(order.subtotal)}</span>
               </div>
+              {order.couponDiscount > 0 && (
+                <div className="flex justify-between text-teal">
+                  <span>Coupon Discount</span>
+                  <span className="font-medium">-{formatPrice(order.couponDiscount)}</span>
+                </div>
+              )}
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Delivery Charge</span>
                 <span>{formatPrice(order.deliveryCharge)}</span>

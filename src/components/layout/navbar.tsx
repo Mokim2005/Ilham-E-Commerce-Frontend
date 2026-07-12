@@ -3,7 +3,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, Heart, ShoppingBag, User, Menu, BookOpen } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Search, Heart, ShoppingBag, User, Menu, BookOpen, LogOut, LayoutDashboard, Package } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -12,6 +13,13 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -27,6 +35,7 @@ const navLinks = [
 ];
 
 export function Navbar() {
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -100,14 +109,38 @@ export function Navbar() {
             </Button>
           </Link>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="hidden h-9 w-9 text-ink/60 hover:text-ink sm:inline-flex"
-            aria-label="Account"
-          >
-            <User className="h-4 w-4" />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hidden h-9 w-9 text-ink/60 hover:text-ink sm:inline-flex"
+                aria-label="Account"
+              >
+                <User className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem onClick={() => router.push("/dashboard")}>
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                Dashboard
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/orders")}>
+                <Package className="mr-2 h-4 w-4" />
+                My Orders
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  router.push("/login");
+                }}
+                className="text-destructive focus:text-destructive"
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                Sign Out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           {/* Cart with live count badge */}
           <Link href="/cart">
@@ -170,6 +203,27 @@ export function Navbar() {
                     <User className="h-4 w-4" />
                     My Account
                   </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Link
+                    href="/orders"
+                    className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-ink/70 transition-colors hover:bg-accent hover:text-ink"
+                  >
+                    <Package className="h-4 w-4" />
+                    My Orders
+                  </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      router.push("/login");
+                    }}
+                    className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-destructive transition-colors hover:bg-destructive/10"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign Out
+                  </button>
                 </SheetClose>
                 <SheetClose asChild>
                   <Link

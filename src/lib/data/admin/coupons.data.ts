@@ -9,6 +9,27 @@ export async function getCouponById(id: string): Promise<Coupon | undefined> {
   return coupons.find((c) => c.id === id);
 }
 
+export async function validateCoupon(
+  code: string,
+  subtotal: number,
+): Promise<{ valid: boolean; coupon?: Coupon; error?: string }> {
+  const coupon = coupons.find(
+    (c) => c.code.toUpperCase() === code.toUpperCase(),
+  );
+  if (!coupon) return { valid: false, error: "Invalid coupon code" };
+  if (!coupon.isActive) return { valid: false, error: "This coupon is no longer active" };
+  if (new Date(coupon.expiryDate) < new Date())
+    return { valid: false, error: "This coupon has expired" };
+  if (coupon.maxUses > 0 && coupon.usedCount >= coupon.maxUses)
+    return { valid: false, error: "This coupon has reached its usage limit" };
+  if (subtotal < coupon.minPurchase)
+    return {
+      valid: false,
+      error: `Minimum purchase of ৳${coupon.minPurchase} required`,
+    };
+  return { valid: true, coupon };
+}
+
 export async function createCoupon(data: Omit<Coupon, "id" | "usedCount">): Promise<Coupon> {
   const newCoupon: Coupon = {
     ...data,

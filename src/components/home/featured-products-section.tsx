@@ -1,6 +1,7 @@
 // Featured Products Section — shadcn Carousel of ProductCards. Used on homepage.
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -10,9 +11,16 @@ import {
 } from "@/components/ui/carousel";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { ProductCard } from "@/components/shared/product-card";
-import { featuredProducts } from "@/lib/mock-data/products";
+import { getFeaturedProducts } from "@/lib/data/products.data";
+import type { Product } from "@/lib/types/product";
 
 export function FeaturedProductsSection() {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    getFeaturedProducts().then(setProducts);
+  }, []);
+
   return (
     <section className="bg-paper py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
@@ -30,7 +38,7 @@ export function FeaturedProductsSection() {
           className="mt-2 w-full"
         >
           <CarouselContent>
-            {featuredProducts.map((product) => (
+            {products.map((product) => (
               <CarouselItem
                 key={product.id}
                 className="pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useWishlistStore } from "@/lib/store/wishlist-store";
-import { ProductCard } from "@/components/shared/product-card";
+import { WishlistItem } from "./wishlist-item";
 import { EmptyWishlist } from "./empty-wishlist";
 
 export function WishlistGrid() {
@@ -12,9 +12,9 @@ export function WishlistGrid() {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
+    <div className="space-y-3">
       {items.map((product) => (
-        <ProductCard key={product.id} product={product} />
+        <WishlistItem key={product.id} product={product} />
       ))}
     </div>
   );

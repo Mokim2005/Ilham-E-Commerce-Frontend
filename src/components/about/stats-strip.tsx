@@ -1,12 +1,21 @@
-// Stats Strip — horizontal number highlights. Used on the About page.
-const stats = [
-  { value: "500+", label: "Products in Stock" },
-  { value: "10,000+", label: "Happy Customers" },
-  { value: "5+", label: "Years of Service" },
-  { value: "98%", label: "Satisfaction Rate" },
-];
+// Stats Strip — pulls real numbers from the data layer to stay consistent with the dashboard.
+import { allProducts } from "@/lib/mock-data/products";
+import { orders } from "@/lib/mock-data/orders";
+import { customers } from "@/lib/mock-data/customers";
 
 export function StatsStrip() {
+  const totalProducts = allProducts.length;
+  const totalCustomers = customers.length;
+  const completedOrders = orders.filter((o) => o.status === "completed").length;
+  const totalOrders = orders.length;
+
+  const stats = [
+    { value: `${totalProducts}+`, label: "Products in Stock" },
+    { value: `${totalCustomers}+`, label: "Happy Customers" },
+    { value: `${completedOrders}`, label: "Orders Completed" },
+    { value: `${totalOrders}+`, label: "Total Orders Placed" },
+  ];
+
   return (
     <section className="bg-paper py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">

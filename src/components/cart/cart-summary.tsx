@@ -1,11 +1,14 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { formatPrice } from "@/lib/utils/format-price";
 import { useCartStore } from "@/lib/store/cart-store";
 
 export function CartSummary() {
+  const router = useRouter();
+  const items = useCartStore((s) => s.items);
   const subtotal = useCartStore((s) =>
     s.items.reduce(
       (sum, item) => sum + item.product.price * item.quantity,
@@ -13,8 +16,9 @@ export function CartSummary() {
     ),
   );
 
-  const deliveryCharge = 0; // placeholder
+  const deliveryCharge = 0;
   const total = subtotal + deliveryCharge;
+  const isEmpty = items.length === 0;
 
   return (
     <div className="rounded-xl border border-rule bg-card p-5">
@@ -45,7 +49,8 @@ export function CartSummary() {
       <Button
         size="lg"
         className="mt-5 w-full bg-teal text-white hover:bg-teal-light"
-        disabled={subtotal === 0}
+        disabled={isEmpty}
+        onClick={() => router.push("/checkout")}
       >
         Proceed to Checkout
       </Button>

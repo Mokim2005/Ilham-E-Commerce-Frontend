@@ -1,25 +1,30 @@
-// About Hero — full-width hero section with headline and mission statement.
+// About Hero — full-width hero with stronger headline, notebook-line motif.
 import Image from "next/image";
 
 export function AboutHero() {
   return (
     <section className="relative overflow-hidden bg-ink">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-8 sm:py-28 lg:py-32">
+      {/* Notebook-line background motif */}
+      <div className="absolute inset-0 opacity-[0.04] notebook-lines" />
+
+      <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-8 sm:py-28 lg:py-32">
         <div className="grid items-center gap-10 lg:grid-cols-2">
           {/* Text */}
           <div>
             <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.2em] text-teal-light">
-              About Inkwell
+              About Ilham Stationery
             </p>
             <h1 className="font-serif text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl">
-              Where Every Page
+              Crafted for the Way
               <br />
-              Tells a Story
+              You Think &amp; Create
             </h1>
             <p className="mt-5 max-w-lg text-base leading-relaxed text-white/70">
-              We believe the right pen, the right notebook, the right tool can
-              change the way you think, create, and communicate. Inkwell exists
-              to make those tools accessible to everyone in Bangladesh.
+              We started with a simple conviction: the tools you write with shape
+              the ideas you bring to life. Ilham Stationery curates notebooks,
+              pens, and art supplies that meet the standards of students,
+              professionals, and creatives across Bangladesh — without the
+              markup you&apos;d expect from imported goods.
             </p>
           </div>
 
@@ -27,7 +32,7 @@ export function AboutHero() {
           <div className="relative hidden aspect-[4/3] overflow-hidden rounded-2xl lg:block">
             <Image
               src="https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?w=800&h=600&fit=crop"
-              alt="Stack of Inkwell notebooks and pens on a wooden desk"
+              alt="Stack of premium notebooks and pens on a wooden desk"
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"

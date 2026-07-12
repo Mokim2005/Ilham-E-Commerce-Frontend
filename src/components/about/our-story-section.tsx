@@ -1,4 +1,4 @@
-// Our Story — two-column section with image and narrative text.
+// Our Story — two-column section with a believable narrative arc.
 import Image from "next/image";
 
 export function OurStorySection() {
@@ -10,7 +10,7 @@ export function OurStorySection() {
           <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
             <Image
               src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=800&h=600&fit=crop"
-              alt="The original Inkwell stationery shop in Dhaka"
+              alt="A workspace filled with quality stationery"
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -23,30 +23,31 @@ export function OurStorySection() {
               Our Story
             </p>
             <h2 className="font-serif text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-              From a Small Desk to Dhaka&apos;s Favorite Stationery Store
+              Born from a Frustration — Built on a Promise
             </h2>
             <div className="mt-5 space-y-4 text-base leading-relaxed text-ink/70">
               <p>
-                Inkwell started in 2019 when our founder, frustrated by the
-                lack of quality stationery options in local markets, decided to
-                import a curated selection of notebooks, pens, and art supplies
-                from Japan, South Korea, and Europe. What began as a small
-                online store operating out of a spare bedroom quickly grew into
-                something much bigger.
+                In early 2019, our founder was a university student in Dhaka,
+                tired of choosing between cheap notebooks that fell apart by
+                mid-semester and overpriced imports that ate through a student
+                budget. The local stationery market was flooded with
+                counterfeits, and the few genuine products were buried in
+                shops that didn&apos;t care enough to curate them.
               </p>
               <p>
-                Today we stock over 500 products across six categories, and
-                we&apos;ve served more than 10,000 customers across Bangladesh.
-                Every product in our collection is hand-tested by our team — if
-                we wouldn&apos;t use it ourselves, we won&apos;t sell it. That
-                simple rule has earned us the trust of students, artists,
-                architects, and anyone who believes that good tools make a real
-                difference.
+                So we started Ilham Stationery with 40 products, a small room,
+                and a hand-tested guarantee: if we wouldn&apos;t use it in our
+                own lectures, sketchbooks, or desk setups, it doesn&apos;t make
+                the cut. That filtering principle — quality over volume — is
+                still how every product enters our catalog today.
               </p>
               <p>
-                We&apos;re still growing, still curating, still obsessed with
-                finding the next great pen or the perfect paper weight. Welcome
-                to Inkwell — we&apos;re glad you&apos;re here.
+                Five years later, we stock over 500 products across notebooks,
+                pens, art supplies, desk accessories, and paper goods. We&apos;ve
+                served more than 10,000 orders to students, architects, writers,
+                and designers in every division of Bangladesh. The room became a
+                warehouse. The 40 products became a curated collection. But the
+                promise stayed the same.
               </p>
             </div>
           </div>

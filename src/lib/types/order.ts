@@ -24,6 +24,7 @@ export interface Order {
   customerEmail: string;
   items: OrderItem[];
   subtotal: number;
+  couponDiscount: number;
   deliveryCharge: number;
   total: number;
   status: OrderStatus;

@@ -63,11 +63,7 @@ export async function getProductBySlug(
 }
 
 export async function getFeaturedProducts(): Promise<Product[]> {
-  return allProducts.filter((p) =>
-    ["fp-001", "fp-002", "fp-003", "fp-004", "fp-005", "fp-006"].includes(
-      p.id,
-    ),
-  );
+  return allProducts.filter((p) => p.badge === "bestseller" || p.id === "fp-001");
 }
 
 export async function getRelatedProducts(

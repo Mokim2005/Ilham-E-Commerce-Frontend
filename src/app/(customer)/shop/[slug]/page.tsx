@@ -59,6 +59,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <section className="border-t border-rule bg-paper py-10 sm:py-14">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <ProductTabs
+            productId={product.id}
+            productName={product.name}
             description={product.description}
             reviewCount={product.reviewCount}
             rating={product.rating}

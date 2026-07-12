@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Plus, Trash2, GripVertical, Image as ImageIcon } from "lucide-react"
 import { toast } from "sonner"
 
@@ -14,7 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { banners } from "@/lib/mock-data/banners"
-import { allProducts } from "@/lib/mock-data/products"
+import { getAllProducts, updateProduct } from "@/lib/data/products.data"
 import type { Banner } from "@/lib/types/banner"
 import type { Product } from "@/lib/types/product"
 
@@ -121,9 +121,14 @@ function BannersTab() {
 }
 
 function FeaturedProductsTab() {
-  const [products, setProducts] = useState<Product[]>([...allProducts])
+  const [products, setProducts] = useState<Product[]>([])
 
-  const updateBadge = (productId: string, badge: string) => {
+  useEffect(() => {
+    getAllProducts().then(setProducts)
+  }, [])
+
+  const updateBadge = async (productId: string, badge: string) => {
+    await updateProduct(productId, { badge: badge as Product["badge"] || undefined })
     setProducts((prev) =>
       prev.map((p) =>
         p.id === productId

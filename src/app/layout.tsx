@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Inter, Fraunces, IBM_Plex_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
 import { StoreHydrator } from "@/components/layout/store-hydrator";
 
 const inter = Inter({
@@ -40,9 +38,7 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${fraunces.variable} ${ibmPlexMono.variable}`}>
       <body className="min-h-screen bg-paper font-sans text-ink antialiased">
         <StoreHydrator />
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        {children}
         <Toaster position="top-center" richColors />
       </body>
     </html>
