@@ -44,6 +44,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <ProductGallery
               images={displayImages}
               productName={product.name}
+              badge={product.badge}
+              originalPrice={product.originalPrice}
+              price={product.price}
+              inStock={product.inStock}
             />
 
             {/* Right: Info + Add to Cart */}

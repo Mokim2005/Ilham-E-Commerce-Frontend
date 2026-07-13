@@ -1,17 +1,35 @@
-// Product Gallery — main image + clickable thumbnails. Client component.
 "use client";
 
 import { useState } from "react";
 import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { getDiscountPercent } from "@/lib/utils/format-price";
 
 interface ProductGalleryProps {
   images: string[];
   productName: string;
+  badge?: "new" | "sale" | "bestseller";
+  originalPrice?: number;
+  price: number;
+  inStock: boolean;
 }
 
-export function ProductGallery({ images, productName }: ProductGalleryProps) {
+export function ProductGallery({
+  images,
+  productName,
+  badge,
+  originalPrice,
+  price,
+  inStock,
+}: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const hasDiscount =
+    !!originalPrice && originalPrice > price;
+  const discountPct = hasDiscount
+    ? getDiscountPercent(originalPrice!, price)
+    : 0;
 
   return (
     <div className="flex flex-col-reverse gap-3">
@@ -43,16 +61,37 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
         </div>
       )}
 
-      {/* Main image */}
-      <div className="relative aspect-square overflow-hidden rounded-2xl bg-muted">
+      {/* Main image with hover zoom */}
+      <div className="group relative aspect-square overflow-hidden rounded-2xl bg-muted">
         <Image
           src={images[activeIndex] ?? images[0]}
           alt={productName}
           fill
-          className="object-cover"
+          className="object-cover transition-transform duration-500 group-hover:scale-110"
           sizes="(max-width: 768px) 100vw, 50vw"
           priority
         />
+
+        {/* Badge overlay */}
+        <div className="absolute left-3 top-3 flex flex-col gap-1.5">
+          {!inStock && (
+            <Badge variant="secondary" className="bg-ink/80 text-white backdrop-blur-sm">
+              Out of Stock
+            </Badge>
+          )}
+          {badge === "new" && (
+            <Badge className="bg-teal text-white">New</Badge>
+          )}
+          {badge === "bestseller" && (
+            <Badge className="bg-ink text-white">Best Seller</Badge>
+          )}
+          {badge === "sale" && (
+            <Badge className="bg-rose text-white">Sale</Badge>
+          )}
+          {discountPct > 0 && (
+            <Badge className="bg-rose text-white">-{discountPct}%</Badge>
+          )}
+        </div>
       </div>
     </div>
   );

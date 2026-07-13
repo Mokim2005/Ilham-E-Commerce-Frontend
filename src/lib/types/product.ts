@@ -20,6 +20,7 @@ export interface Product {
   sku?: string;
   unit?: string;
   stock?: number;
+  variants?: { label: string; image: string; stock: number }[];
 }
 
 export interface ProductFilters {

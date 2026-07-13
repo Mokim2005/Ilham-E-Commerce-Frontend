@@ -1,13 +1,14 @@
-// Add to Cart Box — quantity stepper + live price + Add to Cart button. Client component.
 "use client";
 
 import { useState } from "react";
-import { Minus, Plus, ShoppingBag, Check } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Minus, Plus, ShoppingBag, Zap, Heart, Check } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { formatPrice, getDiscountPercent } from "@/lib/utils/format-price";
 import { useCartStore } from "@/lib/store/cart-store";
+import { useWishlistStore } from "@/lib/store/wishlist-store";
 import type { Product } from "@/lib/types/product";
 
 interface AddToCartBoxProps {
@@ -15,13 +16,19 @@ interface AddToCartBoxProps {
 }
 
 export function AddToCartBox({ product }: AddToCartBoxProps) {
+  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const addCartItem = useCartStore((s) => s.addItem);
 
+  const wishlisted = useWishlistStore((s) =>
+    s.items.some((item) => item.slug === product.slug),
+  );
+  const addWishlistItem = useWishlistStore((s) => s.addItem);
+  const removeWishlistItem = useWishlistStore((s) => s.removeItem);
+
   const stock = product.stock ?? (product.inStock ? 99 : 0);
   const isOutOfStock = stock === 0;
-  const isLowStock = stock > 0 && stock < 10;
   const unitPrice = product.price;
   const hasDiscount =
     !!product.originalPrice && product.originalPrice > product.price;
@@ -35,12 +42,36 @@ export function AddToCartBox({ product }: AddToCartBoxProps) {
 
   const handleAddToCart = () => {
     if (isOutOfStock) return;
+    if (quantity > stock) {
+      toast.error(`Only ${stock} items available`);
+      return;
+    }
     addCartItem(product, quantity);
     setAdded(true);
     toast.success(`Added ${quantity} to cart`, {
       description: `${product.name} — ${formatPrice(totalPrice)}`,
     });
     setTimeout(() => setAdded(false), 1500);
+  };
+
+  const handleBuyNow = () => {
+    if (isOutOfStock) return;
+    if (quantity > stock) {
+      toast.error(`Only ${stock} items available`);
+      return;
+    }
+    addCartItem(product, quantity);
+    router.push("/cart");
+  };
+
+  const handleWishlistToggle = () => {
+    if (wishlisted) {
+      removeWishlistItem(product.slug);
+      toast.success("Removed from wishlist");
+    } else {
+      addWishlistItem(product);
+      toast.success("Added to wishlist");
+    }
   };
 
   return (
@@ -73,6 +104,12 @@ export function AddToCartBox({ product }: AddToCartBoxProps) {
         </div>
       </div>
 
+      {!isOutOfStock && (
+        <p className="text-xs text-muted-foreground">
+          Maximum {stock} items available
+        </p>
+      )}
+
       {/* Live price display */}
       <div className="space-y-1.5">
         <div className="flex items-baseline gap-2">
@@ -100,31 +137,58 @@ export function AddToCartBox({ product }: AddToCartBoxProps) {
         </p>
       </div>
 
-      {/* Add to Cart */}
-      <Button
-        size="lg"
-        className={cn(
-          "w-full text-sm font-semibold transition-colors",
-          isOutOfStock && "opacity-50 cursor-not-allowed",
-          added && "bg-teal text-white",
-        )}
-        disabled={isOutOfStock}
-        onClick={handleAddToCart}
-      >
-        {added ? (
-          <>
-            <Check className="mr-2 h-4 w-4" />
-            Added to Cart
-          </>
-        ) : (
-          <>
-            <ShoppingBag className="mr-2 h-4 w-4" />
-            {isOutOfStock
-              ? "Out of Stock"
-              : `Add ${quantity} to Cart \u2014 ${formatPrice(totalPrice)}`}
-          </>
-        )}
-      </Button>
+      {/* Action buttons */}
+      <div className="flex gap-3">
+        <Button
+          size="lg"
+          className={cn(
+            "flex-1 text-sm font-semibold transition-colors",
+            isOutOfStock && "opacity-50 cursor-not-allowed",
+            added && "bg-teal text-white",
+          )}
+          disabled={isOutOfStock}
+          onClick={handleAddToCart}
+        >
+          {added ? (
+            <>
+              <Check className="mr-2 h-4 w-4" />
+              Added to Cart
+            </>
+          ) : (
+            <>
+              <ShoppingBag className="mr-2 h-4 w-4" />
+              Add to Cart
+            </>
+          )}
+        </Button>
+
+        <Button
+          size="lg"
+          variant="outline"
+          className={cn(
+            "flex-1 text-sm font-semibold",
+            isOutOfStock && "opacity-50 cursor-not-allowed",
+          )}
+          disabled={isOutOfStock}
+          onClick={handleBuyNow}
+        >
+          <Zap className="mr-2 h-4 w-4" />
+          Buy Now
+        </Button>
+
+        <Button
+          size="lg"
+          variant="outline"
+          onClick={handleWishlistToggle}
+          className={cn(
+            "h-11 w-11 shrink-0 px-0",
+            wishlisted && "border-rose bg-rose/5 text-rose hover:bg-rose/10 hover:text-rose",
+          )}
+          aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+        >
+          <Heart className={cn("h-4 w-4", wishlisted && "fill-rose")} />
+        </Button>
+      </div>
     </div>
   );
 }
