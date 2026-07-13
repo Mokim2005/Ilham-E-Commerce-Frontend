@@ -10,6 +10,8 @@ import {
   GraduationCap,
 } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
+import { AnimatedSection } from "@/components/shared/animated-section";
+import { StaggerGrid } from "@/components/shared/stagger-grid";
 import { categories } from "@/lib/mock-data/categories";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -25,13 +27,15 @@ export function CategorySection() {
   return (
     <section className="bg-paper py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        <SectionHeading
-          eyebrow="Browse"
-          title="Shop by Category"
-          description="From everyday essentials to specialty art supplies — find exactly what you need."
-        />
+        <AnimatedSection>
+          <SectionHeading
+            eyebrow="Browse"
+            title="Shop by Category"
+            description="From everyday essentials to specialty art supplies — find exactly what you need."
+          />
+        </AnimatedSection>
 
-        <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3">
+        <StaggerGrid className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3">
           {categories.map((cat) => {
             const Icon = iconMap[cat.icon] || FileText;
             return (
@@ -67,7 +71,7 @@ export function CategorySection() {
               </Link>
             );
           })}
-        </div>
+        </StaggerGrid>
       </div>
     </section>
   );

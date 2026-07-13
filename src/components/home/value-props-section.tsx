@@ -1,5 +1,6 @@
 // Value Props Strip — icons + short text for delivery, payment, quality, returns. Used on homepage.
 import { Truck, ShieldCheck, RotateCcw, CreditCard } from "lucide-react";
+import { StaggerGrid } from "@/components/shared/stagger-grid";
 
 const props = [
   {
@@ -27,23 +28,27 @@ const props = [
 export function ValuePropsSection() {
   return (
     <section className="border-y border-rule bg-paper py-10">
-      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 sm:gap-8 md:grid-cols-4 lg:px-8">
-        {props.map((item) => {
-          const Icon = item.icon;
-          return (
-            <div key={item.title} className="flex items-start gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-teal/10">
-                <Icon className="h-5 w-5 text-teal" />
+      <div className="mx-auto max-w-7xl px-4 lg:px-8">
+        <StaggerGrid className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-4">
+          {props.map((item) => {
+            const Icon = item.icon;
+            return (
+              <div key={item.title} className="flex items-start gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-teal/10">
+                  <Icon className="h-5 w-5 text-teal" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-ink">
+                    {item.title}
+                  </h3>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    {item.desc}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-sm font-semibold text-ink">{item.title}</h3>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  {item.desc}
-                </p>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </StaggerGrid>
       </div>
     </section>
   );

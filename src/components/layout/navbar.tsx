@@ -4,7 +4,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { LazyMotion, domAnimation, m } from "framer-motion";
 import { Search, Heart, ShoppingBag, User, Menu, BookOpen, LogOut, LayoutDashboard, Package } from "lucide-react";
+import { useHideOnScroll } from "@/hooks/use-hide-on-scroll";
 import {
   Sheet,
   SheetContent,
@@ -39,6 +41,9 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
+  const scrollHidden = useHideOnScroll();
+  const hidden = scrollHidden && !mobileOpen;
+
   const wishlistCount = useWishlistStore((s) => s.items.length);
   const cartTotalItems = useCartStore((s) =>
     s.items.reduce((sum, item) => sum + item.quantity, 0),
@@ -52,7 +57,12 @@ export function Navbar() {
   const displayCartCount = mounted ? cartTotalItems : 0;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-rule bg-paper/95 backdrop-blur-md">
+    <LazyMotion features={domAnimation}>
+      <m.header
+        animate={{ y: hidden ? -80 : 0, opacity: hidden ? 0 : 1 }}
+        transition={{ duration: 0.3, ease: "easeInOut" as const }}
+        className="sticky top-0 z-50 border-b border-rule bg-paper/95 backdrop-blur-md"
+      >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
@@ -258,6 +268,7 @@ export function Navbar() {
           </Sheet>
         </div>
       </div>
-    </header>
+      </m.header>
+    </LazyMotion>
   );
 }
