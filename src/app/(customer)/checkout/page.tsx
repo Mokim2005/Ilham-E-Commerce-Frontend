@@ -13,11 +13,13 @@ import { PaymentInstructions } from "@/components/checkout/payment-instructions"
 import { PaymentForm } from "@/components/checkout/payment-form";
 import { PlaceOrderButton } from "@/components/checkout/place-order-button";
 import { useCartStore } from "@/lib/store/cart-store";
+import { useUiStore } from "@/lib/store/ui-store";
 import { getStoreSettings } from "@/lib/data/admin/settings.data";
 import type { Coupon } from "@/lib/types/coupon";
 
 export default function CheckoutPage() {
   const items = useCartStore((s) => s.items);
+  const openCart = useUiStore((s) => s.openCart);
   const [deliveryInfo, setDeliveryInfo] = useState<DeliveryFormData | null>(null);
   const [paymentMethod, setPaymentMethod] = useState("bkash");
   const [transactionId, setTransactionId] = useState("");
@@ -69,11 +71,9 @@ export default function CheckoutPage() {
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <Button variant="ghost" asChild className="mb-4 -ml-2">
-            <Link href="/cart">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Cart
-            </Link>
+          <Button variant="ghost" className="mb-4 -ml-2" onClick={openCart}>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Cart
           </Button>
           <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.2em] text-teal">
             Checkout

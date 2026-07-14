@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { formatPrice } from "@/lib/utils/format-price";
 import { useCartStore } from "@/lib/store/cart-store";
 
-export function CartSummary() {
+export function CartSummary({ onCheckout }: { onCheckout?: () => void }) {
   const router = useRouter();
   const items = useCartStore((s) => s.items);
   const subtotal = useCartStore((s) =>
@@ -19,6 +19,14 @@ export function CartSummary() {
   const deliveryCharge = 0;
   const total = subtotal + deliveryCharge;
   const isEmpty = items.length === 0;
+
+  const handleCheckout = () => {
+    if (onCheckout) {
+      onCheckout();
+    } else {
+      router.push("/checkout");
+    }
+  };
 
   return (
     <div className="rounded-xl border border-rule bg-card p-5">
@@ -50,7 +58,7 @@ export function CartSummary() {
         size="lg"
         className="mt-5 w-full bg-teal text-white hover:bg-teal-light"
         disabled={isEmpty}
-        onClick={() => router.push("/checkout")}
+        onClick={handleCheckout}
       >
         Proceed to Checkout
       </Button>

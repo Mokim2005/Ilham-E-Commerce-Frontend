@@ -27,6 +27,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { useWishlistStore } from "@/lib/store/wishlist-store";
 import { useCartStore } from "@/lib/store/cart-store";
+import { useUiStore } from "@/lib/store/ui-store";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -48,6 +49,7 @@ export function Navbar() {
   const cartTotalItems = useCartStore((s) =>
     s.items.reduce((sum, item) => sum + item.quantity, 0),
   );
+  const openCart = useUiStore((s) => s.openCart);
 
   useEffect(() => {
     setMounted(true);
@@ -153,24 +155,23 @@ export function Navbar() {
           </DropdownMenu>
 
           {/* Cart with live count badge */}
-          <Link href="/cart">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="relative h-9 w-9 text-ink/60 hover:text-ink"
-              aria-label={`Cart (${displayCartCount} items)`}
-            >
-              <ShoppingBag className="h-4 w-4" />
-              {displayCartCount > 0 && (
-                <Badge
-                  variant="destructive"
-                  className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold"
-                >
-                  {displayCartCount}
-                </Badge>
-              )}
-            </Button>
-          </Link>
+          <m.button
+            type="button"
+            whileTap={{ scale: 0.85 }}
+            onClick={openCart}
+            className="relative flex h-9 w-9 items-center justify-center rounded-md text-ink/60 transition-colors hover:bg-accent hover:text-ink"
+            aria-label={`Cart (${displayCartCount} items)`}
+          >
+            <ShoppingBag className="h-4 w-4" />
+            {displayCartCount > 0 && (
+              <Badge
+                variant="destructive"
+                className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold"
+              >
+                {displayCartCount}
+              </Badge>
+            )}
+          </m.button>
 
           {/* Mobile menu toggle */}
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -250,8 +251,12 @@ export function Navbar() {
                   </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                  <Link
-                    href="/cart"
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileOpen(false);
+                      openCart();
+                    }}
                     className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-ink/70 transition-colors hover:bg-accent hover:text-ink"
                   >
                     <ShoppingBag className="h-4 w-4" />
@@ -261,7 +266,7 @@ export function Navbar() {
                         {displayCartCount}
                       </Badge>
                     )}
-                  </Link>
+                  </button>
                 </SheetClose>
               </nav>
             </SheetContent>

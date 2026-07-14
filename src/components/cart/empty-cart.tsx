@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export function EmptyCart() {
+export function EmptyCart({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className="flex flex-col items-center justify-center py-24 text-center">
       <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-muted">
@@ -17,9 +17,18 @@ export function EmptyCart() {
         Looks like you haven&apos;t added anything yet. Start shopping and fill your cart
         with stationery you&apos;ll love.
       </p>
-      <Button asChild className="mt-6 bg-teal text-white hover:bg-teal-light">
-        <Link href="/shop">Browse Products</Link>
-      </Button>
+      {onNavigate ? (
+        <Button
+          className="mt-6 bg-teal text-white hover:bg-teal-light"
+          onClick={onNavigate}
+        >
+          Browse Products
+        </Button>
+      ) : (
+        <Button asChild className="mt-6 bg-teal text-white hover:bg-teal-light">
+          <Link href="/shop">Browse Products</Link>
+        </Button>
+      )}
     </div>
   );
 }

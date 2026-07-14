@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Minus, Plus, ShoppingBag, Zap, Heart, Check } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -9,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { formatPrice, getDiscountPercent } from "@/lib/utils/format-price";
 import { useCartStore } from "@/lib/store/cart-store";
 import { useWishlistStore } from "@/lib/store/wishlist-store";
+import { useUiStore } from "@/lib/store/ui-store";
 import type { Product } from "@/lib/types/product";
 
 interface AddToCartBoxProps {
@@ -16,10 +16,10 @@ interface AddToCartBoxProps {
 }
 
 export function AddToCartBox({ product }: AddToCartBoxProps) {
-  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const addCartItem = useCartStore((s) => s.addItem);
+  const openCart = useUiStore((s) => s.openCart);
 
   const wishlisted = useWishlistStore((s) =>
     s.items.some((item) => item.slug === product.slug),
@@ -61,7 +61,7 @@ export function AddToCartBox({ product }: AddToCartBoxProps) {
       return;
     }
     addCartItem(product, quantity);
-    router.push("/cart");
+    openCart();
   };
 
   const handleWishlistToggle = () => {
