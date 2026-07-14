@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { LazyMotion, domAnimation, m, useScroll, useTransform } from "framer-motion";
+import { LazyMotion, domAnimation, m, useScroll, useTransform, useSpring } from "framer-motion";
 import { CategoryCard } from "@/components/home/category-card";
 import { categories } from "@/lib/mock-data/categories";
 
@@ -56,7 +56,14 @@ export function CategoryScrollGallery() {
     offset: ["start start", "end end"],
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], [0, -totalDistance]);
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 30,
+    mass: 0.5,
+    restDelta: 0.001,
+  });
+
+  const x = useTransform(smoothProgress, [0, 1], [0, -totalDistance]);
 
   if (reduced) {
     return (
@@ -78,7 +85,7 @@ export function CategoryScrollGallery() {
       >
         <div className="sticky top-0 flex h-screen items-center overflow-hidden">
           <m.div
-            style={{ x, gap: `${gap}px` }}
+            style={{ x, gap: `${gap}px`, willChange: "transform" }}
             className="flex items-center"
           >
             {visibleCategories.map((cat, i) => (
