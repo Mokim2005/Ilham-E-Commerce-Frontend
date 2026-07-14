@@ -1,6 +1,7 @@
 // Data-access layer for products. Pages import from here, not from mock-data directly.
 
 import type { Product, ProductFilters } from "@/lib/types/product";
+import type { QuizAnswers } from "@/lib/mock-data/quiz";
 import { allProducts } from "@/lib/mock-data/products";
 import { delay } from "@/lib/utils/delay";
 
@@ -62,8 +63,12 @@ export async function getProductBySlug(
   return allProducts.find((p) => p.slug === slug) ?? null;
 }
 
-export async function getFeaturedProducts(): Promise<Product[]> {
-  return allProducts.filter((p) => p.badge === "bestseller" || p.id === "fp-001");
+export async function getFeaturedProducts(limit = 6): Promise<Product[]> {
+  const all = await getAllProducts();
+  const featured = all.filter((p) => p.isFeatured);
+  if (featured.length >= limit) return featured.slice(0, limit);
+  const rest = all.filter((p) => !p.isFeatured);
+  return [...featured, ...rest].slice(0, limit);
 }
 
 export async function getRelatedProducts(
@@ -93,4 +98,45 @@ export async function deleteProduct(id: string): Promise<boolean> {
   if (index === -1) return false;
   allProducts.splice(index, 1);
   return true;
+}
+
+export async function getQuizRecommendations(
+  answers: QuizAnswers,
+): Promise<Product[]> {
+  const all = await getAllProducts();
+
+  let scored = all.map((product) => {
+    let score = 0;
+
+    const purpose = answers.purpose;
+    if (purpose?.categorySlug && product.categorySlug === purpose.categorySlug) {
+      score += 3;
+    }
+    if (purpose?.tag && product.tags?.includes(purpose.tag)) {
+      score += 2;
+    }
+
+    const budget = answers.budget;
+    if (budget?.priceRange) {
+      const { min, max } = budget.priceRange;
+      if (product.price >= min && product.price <= max) {
+        score += 2;
+      }
+    }
+
+    const vibe = answers.vibe;
+    if (vibe?.tag && product.tags?.includes(vibe.tag)) {
+      score += 2;
+    }
+
+    return { product, score };
+  });
+
+  scored.sort((a, b) => b.score - a.score);
+
+  const top = scored.filter((s) => s.score > 0).slice(0, 3);
+
+  if (top.length >= 2) return top.map((s) => s.product);
+
+  return all.filter((p) => p.isFeatured).slice(0, 3);
 }

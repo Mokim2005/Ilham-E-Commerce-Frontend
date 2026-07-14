@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CartDrawer } from "@/components/cart/cart-drawer";
+import { WhatsAppButton } from "@/components/shared/whatsapp-button";
 
 export default function CustomerLayout({
   children,
@@ -13,6 +14,7 @@ export default function CustomerLayout({
       <CartDrawer />
       <main>{children}</main>
       <Footer />
+      <WhatsAppButton />
     </>
   );
 }

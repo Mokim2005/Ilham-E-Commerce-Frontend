@@ -12,4 +12,5 @@ export const storeSettings: StoreSettings = {
   socialFacebook: "",
   socialInstagram: "",
   socialYoutube: "",
+  whatsappNumber: "8801712345678",
 };

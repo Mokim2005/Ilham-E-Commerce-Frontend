@@ -10,4 +10,5 @@ export interface StoreSettings {
   socialFacebook: string;
   socialInstagram: string;
   socialYoutube: string;
+  whatsappNumber: string;
 }

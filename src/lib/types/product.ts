@@ -13,6 +13,8 @@ export interface Product {
   images?: string[];
   description?: string;
   badge?: "new" | "sale" | "bestseller";
+  isFeatured?: boolean;
+  tags?: string[];
   rating: number;
   reviewCount: number;
   inStock: boolean;

@@ -23,6 +23,8 @@ export const allProducts: Product[] = [
     description:
       "A premium hardbound journal with a luxurious velvet-touch cover in deep midnight blue. Contains 192 pages of 100gsm acid-free paper, perfect for fountain pens and ink.",
     badge: "bestseller",
+    isFeatured: true,
+    tags: ["premium"],
     rating: 4.8,
     reviewCount: 234,
     inStock: true,
@@ -46,6 +48,8 @@ export const allProducts: Product[] = [
     description:
       "Professional-grade brush pens with flexible nylon tips that mimic natural calligraphy strokes. Water-based ink, archival quality, and fade-resistant.",
     badge: "new",
+    isFeatured: true,
+    tags: ["art", "premium"],
     rating: 4.9,
     reviewCount: 89,
     inStock: true,
@@ -64,6 +68,8 @@ export const allProducts: Product[] = [
     image: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=400&h=400&fit=crop",
     description:
       "Natural brown kraft paper roll, 30cm wide x 10 meters. Ideal for gift wrapping, crafts, and packaging. Recyclable and biodegradable.",
+    isFeatured: true,
+    tags: ["minimal"],
     rating: 4.5,
     reviewCount: 56,
     inStock: true,
@@ -85,6 +91,8 @@ export const allProducts: Product[] = [
     description:
       "Handcrafted bamboo desk organizer with 5 compartments. Eco-friendly material with a natural grain finish. Dimensions: 25 x 10 x 12 cm.",
     badge: "sale",
+    isFeatured: true,
+    tags: ["office", "premium"],
     rating: 4.7,
     reviewCount: 178,
     inStock: true,
@@ -104,6 +112,8 @@ export const allProducts: Product[] = [
     description:
       "Artist-grade watercolor pan set with 24 vivid, lightfast colors in a compact metal tin. Each half-pan is refillable.",
     badge: "new",
+    isFeatured: true,
+    tags: ["art", "colorful"],
     rating: 4.6,
     reviewCount: 42,
     inStock: true,
@@ -125,6 +135,8 @@ export const allProducts: Product[] = [
     description:
       "Smooth-writing 0.7mm gel ink pens in 8 vibrant colors. Quick-dry formula resists smudging. Ideal for notes, journaling, and color-coding.",
     badge: "bestseller",
+    isFeatured: true,
+    tags: ["colorful", "premium"],
     rating: 4.4,
     reviewCount: 312,
     inStock: true,
@@ -144,6 +156,7 @@ export const allProducts: Product[] = [
     description:
       "Standard A4 spiral notebook with 200 pages of college-ruled paper. Durable plastic cover and twin-wire binding.",
     badge: "bestseller",
+    tags: ["student"],
     rating: 4.7,
     reviewCount: 891,
     inStock: true,
@@ -165,6 +178,7 @@ export const allProducts: Product[] = [
     rating: 4.3,
     reviewCount: 445,
     inStock: true,
+    tags: ["office", "colorful"],
     brand: "Inkwell Original",
     sku: "INK-OS-020",
     unit: "Pack",
@@ -181,6 +195,7 @@ export const allProducts: Product[] = [
     description:
       "Precision-tip fine liner pens in 4 sizes. Waterproof pigment ink for technical drawing, sketching, and illustration.",
     badge: "bestseller",
+    tags: ["art", "minimal"],
     rating: 4.6,
     reviewCount: 678,
     inStock: true,
@@ -202,6 +217,7 @@ export const allProducts: Product[] = [
     rating: 4.5,
     reviewCount: 1203,
     inStock: true,
+    tags: ["student", "minimal"],
     brand: "Inkwell Original",
     sku: "INK-PP-040",
     unit: "Ream",
@@ -220,6 +236,7 @@ export const allProducts: Product[] = [
     rating: 4.2,
     reviewCount: 567,
     inStock: true,
+    tags: ["student"],
     brand: "Inkwell Original",
     sku: "INK-SE-005",
     unit: "Set",
@@ -236,6 +253,7 @@ export const allProducts: Product[] = [
     description:
       "Non-toxic wax crayons in 32 rich colors. Smooth, even laydown with vibrant pigmentation. Safe for kids.",
     badge: "bestseller",
+    tags: ["art", "colorful"],
     rating: 4.4,
     reviewCount: 892,
     inStock: true,
@@ -255,6 +273,7 @@ export const allProducts: Product[] = [
     description:
       "Full-year 2026 diary with genuine leather cover and ribbon bookmark. Weekly and monthly planning pages.",
     badge: "bestseller",
+    tags: ["premium"],
     rating: 4.8,
     reviewCount: 2341,
     inStock: true,
@@ -276,6 +295,7 @@ export const allProducts: Product[] = [
     rating: 4.7,
     reviewCount: 1876,
     inStock: true,
+    tags: ["art", "premium"],
     brand: "ArtLine Pro",
     sku: "ALP-PN-050",
     unit: "Set",
@@ -292,6 +312,7 @@ export const allProducts: Product[] = [
     description:
       "Heavyweight 200gsm cartridge paper, ideal for pencil, charcoal, ink, and light washes. 80 sheets, A4 size.",
     badge: "bestseller",
+    tags: ["art", "minimal"],
     rating: 4.6,
     reviewCount: 1543,
     inStock: true,
@@ -313,6 +334,7 @@ export const allProducts: Product[] = [
     rating: 4.3,
     reviewCount: 987,
     inStock: true,
+    tags: ["office"],
     brand: "Inkwell Original",
     sku: "INK-OS-060",
     unit: "Set",
@@ -329,6 +351,7 @@ export const allProducts: Product[] = [
     description:
       "Pack of 10 A5 exercise books, 40 pages each, ruled. Durable laminated cover in assorted colors.",
     badge: "bestseller",
+    tags: ["student"],
     rating: 4.5,
     reviewCount: 2109,
     inStock: true,
@@ -350,6 +373,7 @@ export const allProducts: Product[] = [
     rating: 4.4,
     reviewCount: 765,
     inStock: true,
+    tags: ["art", "colorful"],
     brand: "Inkwell Original",
     sku: "INK-PP-060",
     unit: "Pack",
@@ -366,6 +390,7 @@ export const allProducts: Product[] = [
     description:
       "Ultra-soft cloud-shaped erasers that lift graphite cleanly without smudging. Set of 4 pastel colors.",
     badge: "new",
+    tags: ["student", "minimal"],
     rating: 4.2,
     reviewCount: 18,
     inStock: true,
@@ -385,6 +410,7 @@ export const allProducts: Product[] = [
     description:
       "A5 hardcover notebook with a vintage typewriter-inspired cover design. 160 pages of 120gsm cream paper, lay-flat binding.",
     badge: "new",
+    tags: ["premium"],
     rating: 4.8,
     reviewCount: 34,
     inStock: true,
@@ -404,6 +430,7 @@ export const allProducts: Product[] = [
     description:
       "Set of 10 metallic gel pens with shimmering ink. Perfect for card-making, journaling, and decorative writing.",
     badge: "new",
+    tags: ["art", "colorful"],
     rating: 4.6,
     reviewCount: 27,
     inStock: true,
@@ -423,6 +450,7 @@ export const allProducts: Product[] = [
     description:
       "Water-based acrylic paint markers in 12 bold colors. Medium 2mm tip, opaque coverage on most surfaces.",
     badge: "new",
+    tags: ["art", "premium"],
     rating: 4.5,
     reviewCount: 15,
     inStock: true,
@@ -442,6 +470,7 @@ export const allProducts: Product[] = [
     description:
       "Eco-friendly A5 notepad made from 100% post-consumer recycled paper. 80 sheets, perforated pages, cardboard backing.",
     badge: "new",
+    tags: ["minimal"],
     rating: 4.3,
     reviewCount: 9,
     inStock: true,
@@ -461,6 +490,7 @@ export const allProducts: Product[] = [
     description:
       "Set of 12 adhesive cable clips in 3 sizes. Keeps desk cables organized and tangle-free. Strong 3M adhesive backing.",
     badge: "new",
+    tags: ["office"],
     rating: 4.1,
     reviewCount: 12,
     inStock: true,
