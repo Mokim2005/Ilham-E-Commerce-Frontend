@@ -32,6 +32,7 @@ export function FilterSidebar({
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [isPending, startTransition] = useTransition();
 
+  // আপনার স্লাইডারের লজিক অনুযায়ী স্টেট লাইভ ট্র্যাকিংয়ের জন্য
   const [values, setValues] = useState<number[]>([
     minPrice ?? priceRange[0],
     maxPrice ?? priceRange[1],
@@ -59,15 +60,16 @@ export function FilterSidebar({
         router.push(`/shop?${params.toString()}`, { scroll: false });
       });
     },
-    [router, searchParams, priceRange, startTransition],
+    [router, searchParams, priceRange],
   );
 
+  // আপনার স্লাইডার ড্র্যাগিং যেন স্মুথ হয়, তাই ৫০০ms ডেবোন্স ব্যবহার করা হয়েছে
   const debouncedPushPrice = useCallback(
     (min: number, max: number) => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
       debounceRef.current = setTimeout(() => {
         pushPriceToUrl(min, max);
-      }, 300);
+      }, 500);
     },
     [pushPriceToUrl],
   );
@@ -85,7 +87,7 @@ export function FilterSidebar({
         router.push(`/shop?${params.toString()}`, { scroll: false });
       });
     },
-    [router, searchParams, startTransition],
+    [router, searchParams],
   );
 
   return (
@@ -113,21 +115,23 @@ export function FilterSidebar({
 
       <Separator />
 
-      {/* Price Range — DualRangeSlider with floating labels */}
+      {/* Price Range — Updated with your customized DualRangeSlider */}
       <div>
         <h3 className="mb-3 text-sm font-semibold text-ink">Price Range</h3>
-        <div className="px-1 pt-6">
+        <div className="px-1 pt-4">
           <DualRangeSlider
             label
-            labelContentPos="top"
+            lableContenPos={'left'} // আপনার রিকোয়ার্ড লেফট পজিশন
             value={values}
             onValueChange={(newValues) => {
-              setValues(newValues);
-              debouncedPushPrice(newValues[0], newValues[1]);
+              if (newValues[0] != null && newValues[1] != null) {
+                setValues(newValues);
+                debouncedPushPrice(newValues[0], newValues[1]);
+              }
             }}
-            min={priceRange[0]}
-            max={priceRange[1]}
-            step={10}
+            min={priceRange[0]} // ডাইনামিক সর্বনিম্ন প্রাইস (e.g. 0)
+            max={priceRange[1]} // ডাইনামিক সর্বোচ্চ প্রাইস (e.g. 5000)
+            step={1} // আপনার রিকোয়ার্ড স্টেপ ভ্যালু
             formatLabel={formatPrice}
           />
         </div>
