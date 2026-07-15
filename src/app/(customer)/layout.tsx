@@ -1,5 +1,5 @@
 import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
+import { Footer } from "@/components/footer/footer";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
 
