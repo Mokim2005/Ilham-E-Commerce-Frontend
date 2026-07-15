@@ -1,11 +1,27 @@
-// Navbar — sticky glass-effect header with search, desktop nav, mobile Sheet.
+// Navbar — sticky glass-effect header with always-visible search, desktop nav, mobile Sheet.
 "use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { LazyMotion, domAnimation, m } from "framer-motion";
-import { Search, Heart, ShoppingBag, User, Menu, BookOpen, LogOut, LayoutDashboard, Package, X } from "lucide-react";
+import {
+  Search,
+  Heart,
+  ShoppingBag,
+  User,
+  Menu,
+  BookOpen,
+  LogOut,
+  LayoutDashboard,
+  Package,
+  Home,
+  Store,
+  LayoutGrid,
+  Info,
+  Phone,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 import { useHideOnScroll } from "@/hooks/use-hide-on-scroll";
 import {
   Sheet,
@@ -30,19 +46,21 @@ import { useWishlistStore } from "@/lib/store/wishlist-store";
 import { useCartStore } from "@/lib/store/cart-store";
 import { useUiStore } from "@/lib/store/ui-store";
 
+// Each nav link carries its own icon so the menu reads as a small,
+// scannable set of destinations rather than plain text.
 const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "Shop", href: "/shop" },
-  { label: "Categories", href: "/categories" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
+  { label: "Home", href: "/", icon: Home },
+  { label: "Shop", href: "/shop", icon: Store },
+  { label: "Categories", href: "/categories", icon: LayoutGrid },
+  { label: "About", href: "/about", icon: Info },
+  { label: "Contact", href: "/contact", icon: Phone },
 ];
 
 export function Navbar() {
   const router = useRouter();
+  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   const scrollHidden = useHideOnScroll();
@@ -61,11 +79,15 @@ export function Navbar() {
   const displayWishlistCount = mounted ? wishlistCount : 0;
   const displayCartCount = mounted ? cartTotalItems : 0;
 
+  // A link is "active" on an exact match for "/", or on a prefix match for
+  // everything else so nested routes (e.g. /shop/pens) still light up "Shop".
+  const isLinkActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       router.push(`/shop?q=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchOpen(false);
       setSearchQuery("");
     }
   };
@@ -77,9 +99,9 @@ export function Navbar() {
         transition={{ duration: 0.3, ease: "easeInOut" as const }}
         className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60"
       >
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 lg:px-8">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 lg:px-8">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex shrink-0 items-center gap-2">
             <BookOpen className="h-5 w-5 text-primary" />
             <span className="font-serif text-2xl font-bold tracking-tight text-foreground">
               Ilham
@@ -89,56 +111,62 @@ export function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop Nav */}
+          {/* Desktop Nav — icon + label, animated underline for hover/active */}
           <nav className="hidden items-center gap-1 md:flex">
-            {navLinks.map((link) => (
-              <m.div key={link.href} whileHover={{ y: -1 }} transition={{ duration: 0.15 }}>
-                <Link
-                  href={link.href}
-                  className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                >
-                  {link.label}
-                </Link>
-              </m.div>
-            ))}
+            {navLinks.map((link) => {
+              const active = isLinkActive(link.href);
+              const Icon = link.icon;
+              return (
+                <m.div key={link.href} whileHover={{ y: -1 }} whileTap={{ y: 0 }} transition={{ duration: 0.15 }}>
+                  <Link
+                    href={link.href}
+                    aria-current={active ? "page" : undefined}
+                    className={cn(
+                      "group relative flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200",
+                      active
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground",
+                    )}
+                  >
+                    <Icon
+                      className={cn(
+                        "h-4 w-4 transition-transform duration-200 group-hover:scale-110",
+                        active && "text-primary",
+                      )}
+                    />
+                    {link.label}
+                    {/* Animated underline: grows on hover, stays filled when active */}
+                    <span
+                      aria-hidden
+                      className={cn(
+                        "absolute inset-x-3 -bottom-0.5 h-0.5 origin-left scale-x-0 rounded-full bg-primary transition-transform duration-200 ease-out group-hover:scale-x-100",
+                        active && "scale-x-100",
+                      )}
+                    />
+                  </Link>
+                </m.div>
+              );
+            })}
           </nav>
 
-          {/* Right icons */}
-          <div className="flex items-center gap-1">
-            {/* Search toggle / inline search */}
-            {searchOpen ? (
-              <form onSubmit={handleSearch} className="flex items-center gap-2">
-                <Input
-                  type="search"
-                  placeholder="Search stationery..."
-                  autoFocus
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="h-9 w-48 rounded-full border-border bg-background px-4 text-sm sm:w-64"
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="h-9 w-9 shrink-0 text-muted-foreground hover:text-foreground"
-                  onClick={() => { setSearchOpen(false); setSearchQuery(""); }}
-                  aria-label="Close search"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </form>
-            ) : (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="hidden h-9 w-9 text-muted-foreground hover:text-foreground sm:inline-flex"
-                onClick={() => setSearchOpen(true)}
-                aria-label="Search"
-              >
-                <Search className="h-4 w-4" />
-              </Button>
-            )}
+          {/* Always-visible search bar (no click-to-open toggle) */}
+          <form
+            onSubmit={handleSearch}
+            className="relative hidden flex-1 max-w-xs items-center sm:flex lg:max-w-sm"
+          >
+            <Search className="pointer-events-none absolute left-3 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search stationery..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label="Search products"
+              className="h-9 w-full rounded-full border-border bg-background pl-9 pr-4 text-sm"
+            />
+          </form>
 
+          {/* Right icons */}
+          <div className="flex shrink-0 items-center gap-1">
             {/* Wishlist with live count badge */}
             <Link href="/wishlist">
               <m.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -235,16 +263,27 @@ export function Navbar() {
                   </SheetTitle>
                 </SheetHeader>
                 <nav className="flex flex-col px-4 py-4">
-                  {navLinks.map((link) => (
-                    <SheetClose asChild key={link.href}>
-                      <Link
-                        href={link.href}
-                        className="rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                      >
-                        {link.label}
-                      </Link>
-                    </SheetClose>
-                  ))}
+                  {navLinks.map((link) => {
+                    const active = isLinkActive(link.href);
+                    const Icon = link.icon;
+                    return (
+                      <SheetClose asChild key={link.href}>
+                        <Link
+                          href={link.href}
+                          aria-current={active ? "page" : undefined}
+                          className={cn(
+                            "flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors",
+                            active
+                              ? "bg-accent text-foreground"
+                              : "text-muted-foreground hover:bg-accent hover:text-foreground",
+                          )}
+                        >
+                          <Icon className={cn("h-4 w-4", active && "text-primary")} />
+                          {link.label}
+                        </Link>
+                      </SheetClose>
+                    );
+                  })}
                   <Separator className="my-3" />
 
                   {/* Mobile search */}
@@ -255,6 +294,7 @@ export function Navbar() {
                       placeholder="Search..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
+                      aria-label="Search products"
                       className="h-9 flex-1 rounded-full border-border bg-background px-3 text-sm"
                     />
                   </form>

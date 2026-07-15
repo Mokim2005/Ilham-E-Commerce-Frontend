@@ -1,11 +1,10 @@
-// Filter Sidebar — category checkboxes, price range, availability toggle. Client component.
+// Filter Sidebar — category checkboxes, dual-range price slider, availability toggle. Client component.
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
+import { DualRangeSlider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { formatPrice } from "@/lib/utils/format-price";
@@ -30,15 +29,16 @@ export function FilterSidebar({
 }: FilterSidebarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [isPending, startTransition] = useTransition();
 
-  // Local drag state — updates instantly, no URL push until release
-  const [localMin, setLocalMin] = useState(minPrice ?? priceRange[0]);
-  const [localMax, setLocalMax] = useState(maxPrice ?? priceRange[1]);
+  const [values, setValues] = useState<number[]>([
+    minPrice ?? priceRange[0],
+    maxPrice ?? priceRange[1],
+  ]);
 
-  // Sync local state when URL params change externally
   useEffect(() => {
-    setLocalMin(minPrice ?? priceRange[0]);
-    setLocalMax(maxPrice ?? priceRange[1]);
+    setValues([minPrice ?? priceRange[0], maxPrice ?? priceRange[1]]);
   }, [minPrice, maxPrice, priceRange]);
 
   const pushPriceToUrl = useCallback(
@@ -55,9 +55,21 @@ export function FilterSidebar({
         params.delete("max");
       }
       params.delete("page");
-      router.push(`/shop?${params.toString()}`);
+      startTransition(() => {
+        router.push(`/shop?${params.toString()}`, { scroll: false });
+      });
     },
-    [router, searchParams, priceRange],
+    [router, searchParams, priceRange, startTransition],
+  );
+
+  const debouncedPushPrice = useCallback(
+    (min: number, max: number) => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      debounceRef.current = setTimeout(() => {
+        pushPriceToUrl(min, max);
+      }, 300);
+    },
+    [pushPriceToUrl],
   );
 
   const updateParam = useCallback(
@@ -69,9 +81,11 @@ export function FilterSidebar({
         params.set(key, value);
       }
       params.delete("page");
-      router.push(`/shop?${params.toString()}`);
+      startTransition(() => {
+        router.push(`/shop?${params.toString()}`, { scroll: false });
+      });
     },
-    [router, searchParams],
+    [router, searchParams, startTransition],
   );
 
   return (
@@ -99,31 +113,23 @@ export function FilterSidebar({
 
       <Separator />
 
-      {/* Price Range — local state during drag, URL update on commit */}
+      {/* Price Range — DualRangeSlider with floating labels */}
       <div>
-        <h3 className="mb-3 text-sm font-semibold text-ink">
-          Price Range
-        </h3>
-        <div className="px-1">
-          <Slider
+        <h3 className="mb-3 text-sm font-semibold text-ink">Price Range</h3>
+        <div className="px-1 pt-6">
+          <DualRangeSlider
+            label
+            labelContentPos="top"
+            value={values}
+            onValueChange={(newValues) => {
+              setValues(newValues);
+              debouncedPushPrice(newValues[0], newValues[1]);
+            }}
             min={priceRange[0]}
             max={priceRange[1]}
-            step={50}
-            value={[localMin, localMax]}
-            onValueChange={([min, max]) => {
-              // Continuous updates — visual only, no URL push
-              setLocalMin(min);
-              setLocalMax(max);
-            }}
-            onValueCommit={([min, max]) => {
-              // Fired once on release — now push to URL
-              pushPriceToUrl(min, max);
-            }}
+            step={10}
+            formatLabel={formatPrice}
           />
-          <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
-            <span>{formatPrice(localMin)}</span>
-            <span>{formatPrice(localMax)}</span>
-          </div>
         </div>
       </div>
 

@@ -3,9 +3,10 @@
 
 import { useEffect, useState } from "react";
 import { LazyMotion, domAnimation, m, useReducedMotion } from "framer-motion";
-import { storeSettings } from "@/lib/mock-data/settings";
 
-const WHATSAPP_URL = `https://wa.me/${storeSettings.whatsappNumber}?text=${encodeURIComponent("Hi Ilham Stationery! I have a question.")}`;
+// Bangladesh number 01717664436 in wa.me international format (no leading 0, prefixed with 880)
+const WHATSAPP_NUMBER = "8801717664436";
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Ilham Stationery! I have a question.")}`;
 
 const pulseAnimation = {
   scale: [1, 1.08, 1],

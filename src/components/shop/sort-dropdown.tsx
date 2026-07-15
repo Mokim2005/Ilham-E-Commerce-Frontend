@@ -2,7 +2,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useTransition } from "react";
 import {
   Select,
   SelectContent,
@@ -27,6 +27,7 @@ interface SortDropdownProps {
 export function SortDropdown({ currentSort }: SortDropdownProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
 
   const handleChange = useCallback(
     (value: string) => {
@@ -37,9 +38,11 @@ export function SortDropdown({ currentSort }: SortDropdownProps) {
         params.set("sort", value);
       }
       params.delete("page");
-      router.push(`/shop?${params.toString()}`);
+      startTransition(() => {
+        router.push(`/shop?${params.toString()}`, { scroll: false });
+      });
     },
-    [router, searchParams],
+    [router, searchParams, startTransition],
   );
 
   return (
