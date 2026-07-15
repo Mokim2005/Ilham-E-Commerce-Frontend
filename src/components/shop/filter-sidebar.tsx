@@ -32,7 +32,7 @@ export function FilterSidebar({
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [isPending, startTransition] = useTransition();
 
-  // আপনার স্লাইডারের লজিক অনুযায়ী স্টেট লাইভ ট্র্যাকিংয়ের জন্য
+
   const [values, setValues] = useState<number[]>([
     minPrice ?? priceRange[0],
     maxPrice ?? priceRange[1],
@@ -63,7 +63,7 @@ export function FilterSidebar({
     [router, searchParams, priceRange],
   );
 
-  // আপনার স্লাইডার ড্র্যাগিং যেন স্মুথ হয়, তাই ৫০০ms ডেবোন্স ব্যবহার করা হয়েছে
+ 
   const debouncedPushPrice = useCallback(
     (min: number, max: number) => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -121,7 +121,7 @@ export function FilterSidebar({
         <div className="px-1 pt-4">
           <DualRangeSlider
             label
-            lableContenPos={'left'} // আপনার রিকোয়ার্ড লেফট পজিশন
+            lableContenPos={'left'} 
             value={values}
             onValueChange={(newValues) => {
               if (newValues[0] != null && newValues[1] != null) {
@@ -129,9 +129,9 @@ export function FilterSidebar({
                 debouncedPushPrice(newValues[0], newValues[1]);
               }
             }}
-            min={priceRange[0]} // ডাইনামিক সর্বনিম্ন প্রাইস (e.g. 0)
-            max={priceRange[1]} // ডাইনামিক সর্বোচ্চ প্রাইস (e.g. 5000)
-            step={1} // আপনার রিকোয়ার্ড স্টেপ ভ্যালু
+            min={priceRange[0]} 
+            max={priceRange[1]} 
+            step={1} 
             formatLabel={formatPrice}
           />
         </div>
