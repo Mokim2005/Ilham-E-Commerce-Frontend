@@ -11,7 +11,7 @@ export function CategoryCard({
 }) {
   return (
     <Link
-      href={`/category/${category.slug}`}
+      href={`/shop?category=${category.slug}`}
       className="group relative block h-[400px] w-[300px] shrink-0 overflow-hidden rounded-xl sm:h-[420px] sm:w-[340px]"
     >
       <Image
