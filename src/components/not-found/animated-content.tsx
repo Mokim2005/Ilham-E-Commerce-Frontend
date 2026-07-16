@@ -15,7 +15,7 @@ const containerVariants = {
 
 const childVariants = {
   hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
 };
 
 const scribbleVariants = {
@@ -23,7 +23,7 @@ const scribbleVariants = {
   visible: {
     pathLength: 1,
     opacity: 1,
-    transition: { duration: 0.9, ease: "easeInOut" },
+    transition: { duration: 0.9, ease: "easeInOut" as const },
   },
 };
 
@@ -82,8 +82,8 @@ export function NotFoundContent() {
               stroke="currentColor"
               strokeWidth="5"
               strokeLinecap="round"
-              strokeOinejoin="round"
-              className="text-priamry"
+              strokeLinejoin="round"
+              className="text-primary"
               initial={{ pathLength: 0, opacity: 0 }}
               animate={{ pathLength: 1, opacity: 1 }}
               transition={{ duration: 0.9, ease: "easeInOut" }}

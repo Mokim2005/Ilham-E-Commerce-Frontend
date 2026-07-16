@@ -121,7 +121,7 @@ export function FilterSidebar({
         <div className="px-1 pt-4">
           <DualRangeSlider
             label
-            lableContenPos={'left'} 
+            labelContentPos={'top'} 
             value={values}
             onValueChange={(newValues) => {
               if (newValues[0] != null && newValues[1] != null) {
