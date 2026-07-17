@@ -84,24 +84,26 @@ export function HeroBackgroundSlider() {
                 fill
                 priority={current === 0}
                 sizes="100vw"
-                className="object-cover scale-[1.08] blur-[4px] brightness-[0.55]"
+                className="object-cover scale-[1.08] blur-[3px] brightness-[0.45] saturate-110"
               />
             </m.div>
           </m.div>
         </AnimatePresence>
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
+        {/* Gradient overlays — richer, multi-layered for depth */}
+        <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-foreground/30" />
 
-        <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 gap-2">
+        {/* Slide indicators — refined pill style */}
+        <div className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 gap-2">
           {heroSlides.map((slide, i) => (
             <button
               key={slide.id}
               onClick={() => setCurrent(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className={`h-2 rounded-full transition-all duration-300 ${
+              className={`h-1.5 rounded-full transition-all duration-400 ${
                 i === current
-                  ? "w-6 bg-white"
-                  : "w-2 bg-white/40 hover:bg-white/60"
+                  ? "w-7 bg-white shadow-sm"
+                  : "w-1.5 bg-white/30 hover:bg-white/50"
               }`}
             />
           ))}

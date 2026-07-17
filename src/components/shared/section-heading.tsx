@@ -1,4 +1,4 @@
-// SectionHeading — reusable section title with eyebrow label + title + optional description.
+// SectionHeading — reusable section title with eyebrow label + serif title + optional description.
 import { cn } from "@/lib/utils";
 
 interface SectionHeadingProps {
@@ -19,22 +19,24 @@ export function SectionHeading({
   return (
     <div
       className={cn(
-        "mb-8 max-w-2xl",
+        "mb-10 max-w-2xl",
         align === "center" && "mx-auto text-center",
         align === "left" && "text-left",
         className
       )}
     >
       {eyebrow && (
-        <span className="mb-2 block font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-teal">
+        <span className="mb-3 block font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-primary">
           {eyebrow}
         </span>
       )}
-      <h2 className="font-serif text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+      <h2 className="font-serif text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
         {title}
       </h2>
       {description && (
-        <p className="mt-3 text-base text-muted-foreground">{description}</p>
+        <p className="mt-3.5 text-base leading-relaxed text-muted-foreground">
+          {description}
+        </p>
       )}
     </div>
   );

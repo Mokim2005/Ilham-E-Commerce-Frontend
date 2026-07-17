@@ -1,4 +1,5 @@
-// Navbar — sticky glass-effect header with always-visible search, desktop nav, mobile Sheet.
+// Navbar — sticky premium glass-effect header with highlighter-swipe nav links,
+// always-visible search, and a stationery-inspired mobile Sheet.
 "use client";
 
 import { useState, useEffect } from "react";
@@ -8,7 +9,6 @@ import { LazyMotion, domAnimation, m } from "framer-motion";
 import {
   Search,
   Heart,
-  ShoppingBag,
   User,
   Menu,
   BookOpen,
@@ -21,6 +21,7 @@ import {
   Info,
   Phone,
 } from "lucide-react";
+import { LuShoppingCart } from "react-icons/lu";
 import { cn } from "@/lib/utils";
 import { useHideOnScroll } from "@/hooks/use-hide-on-scroll";
 import {
@@ -46,8 +47,6 @@ import { useWishlistStore } from "@/lib/store/wishlist-store";
 import { useCartStore } from "@/lib/store/cart-store";
 import { useUiStore } from "@/lib/store/ui-store";
 
-// Each nav link carries its own icon so the menu reads as a small,
-// scannable set of destinations rather than plain text.
 const navLinks = [
   { label: "Home", href: "/", icon: Home },
   { label: "Shop", href: "/shop", icon: Store },
@@ -79,8 +78,6 @@ export function Navbar() {
   const displayWishlistCount = mounted ? wishlistCount : 0;
   const displayCartCount = mounted ? cartTotalItems : 0;
 
-  // A link is "active" on an exact match for "/", or on a prefix match for
-  // everything else so nested routes (e.g. /shop/pens) still light up "Shop".
   const isLinkActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
@@ -97,21 +94,23 @@ export function Navbar() {
       <m.header
         animate={{ y: hidden ? -80 : 0, opacity: hidden ? 0 : 1 }}
         transition={{ duration: 0.3, ease: "easeInOut" as const }}
-        className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60"
+        className="sticky top-0 z-50 border-b border-border/40 bg-background/70 backdrop-blur-2xl supports-[backdrop-filter]:bg-background/50"
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 lg:px-8">
-          {/* Logo */}
-          <Link href="/" className="flex shrink-0 items-center gap-2">
-            <BookOpen className="h-5 w-5 text-primary" />
+          {/* Logo — serif wordmark with primary accent */}
+          <Link href="/" className="group flex shrink-0 items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 transition-colors group-hover:bg-primary/15">
+              <BookOpen className="h-4 w-4 text-primary" />
+            </div>
             <span className="font-serif text-2xl font-bold tracking-tight text-foreground">
               Ilham
             </span>
-            <span className="hidden font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground sm:inline">
+            <span className="hidden font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/60 sm:inline">
               Stationery
             </span>
           </Link>
 
-          {/* Desktop Nav — icon + label, animated underline for hover/active */}
+          {/* Desktop Nav — highlighter-swipe on each link */}
           <nav className="hidden items-center gap-1 md:flex">
             {navLinks.map((link) => {
               const active = isLinkActive(link.href);
@@ -122,7 +121,7 @@ export function Navbar() {
                     href={link.href}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "group relative flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200",
+                      "highlighter-swipe group relative flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium transition-colors duration-200",
                       active
                         ? "text-foreground"
                         : "text-muted-foreground hover:text-foreground",
@@ -135,11 +134,10 @@ export function Navbar() {
                       )}
                     />
                     {link.label}
-                    {/* Animated underline: grows on hover, stays filled when active */}
                     <span
                       aria-hidden
                       className={cn(
-                        "absolute inset-x-3 -bottom-0.5 h-0.5 origin-left scale-x-0 rounded-full bg-primary transition-transform duration-200 ease-out group-hover:scale-x-100",
+                        "absolute inset-x-3.5 -bottom-0.5 h-0.5 origin-left scale-x-0 rounded-full bg-primary transition-transform duration-300 ease-out group-hover:scale-x-100",
                         active && "scale-x-100",
                       )}
                     />
@@ -149,31 +147,31 @@ export function Navbar() {
             })}
           </nav>
 
-          {/* Always-visible search bar (no click-to-open toggle) */}
+          {/* Search bar — premium rounded pill with muted bg */}
           <form
             onSubmit={handleSearch}
             className="relative hidden flex-1 max-w-xs items-center sm:flex lg:max-w-sm"
           >
-            <Search className="pointer-events-none absolute left-3 h-4 w-4 text-muted-foreground" />
+            <Search className="pointer-events-none absolute left-3 h-4 w-4 text-muted-foreground/60" />
             <Input
               type="search"
               placeholder="Search stationery..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               aria-label="Search products"
-              className="h-9 w-full rounded-full border-border bg-background pl-9 pr-4 text-sm"
+              className="h-9 w-full rounded-full border-border/60 bg-muted/50 pl-9 pr-4 text-sm placeholder:text-muted-foreground/50 focus:bg-background focus:ring-1 focus:ring-primary/20"
             />
           </form>
 
           {/* Right icons */}
           <div className="flex shrink-0 items-center gap-1">
-            {/* Wishlist with live count badge */}
+            {/* Wishlist */}
             <Link href="/wishlist">
               <m.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="relative hidden h-9 w-9 text-muted-foreground hover:text-foreground sm:inline-flex"
+                  className="relative hidden h-9 w-9 text-muted-foreground hover:bg-accent hover:text-foreground sm:inline-flex"
                   aria-label={`Wishlist (${displayWishlistCount} items)`}
                 >
                   <Heart className="h-4 w-4" />
@@ -189,13 +187,14 @@ export function Navbar() {
               </m.div>
             </Link>
 
+            {/* Account dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <m.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="hidden h-9 w-9 text-muted-foreground hover:text-foreground sm:inline-flex"
+                    className="hidden h-9 w-9 text-muted-foreground hover:bg-accent hover:text-foreground sm:inline-flex"
                     aria-label="Account"
                   >
                     <User className="h-4 w-4" />
@@ -222,15 +221,15 @@ export function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Cart with live count badge */}
+            {/* Cart */}
             <m.button
               type="button"
               whileTap={{ scale: 0.85 }}
               onClick={openCart}
-              className="relative flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              className="relative flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
               aria-label={`Cart (${displayCartCount} items)`}
             >
-              <ShoppingBag className="h-4 w-4" />
+              <LuShoppingCart className="h-4 w-4" />
               {displayCartCount > 0 && (
                 <Badge
                   variant="destructive"
@@ -241,7 +240,7 @@ export function Navbar() {
               )}
             </m.button>
 
-            {/* Mobile menu toggle */}
+            {/* Mobile menu */}
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
                 <Button
@@ -254,10 +253,12 @@ export function Navbar() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-72 bg-background p-0">
-                <SheetHeader className="border-b border-border px-6 py-4">
+                <SheetHeader className="border-b border-border/50 px-6 py-4">
                   <SheetTitle className="text-left">
-                    <span className="flex items-center gap-2 font-serif text-xl font-bold text-foreground">
-                      <BookOpen className="h-5 w-5 text-primary" />
+                    <span className="flex items-center gap-2.5 font-serif text-xl font-bold text-foreground">
+                      <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10">
+                        <BookOpen className="h-3.5 w-3.5 text-primary" />
+                      </div>
                       Ilham
                     </span>
                   </SheetTitle>
@@ -272,7 +273,7 @@ export function Navbar() {
                           href={link.href}
                           aria-current={active ? "page" : undefined}
                           className={cn(
-                            "flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors",
+                            "highlighter-swipe flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                             active
                               ? "bg-accent text-foreground"
                               : "text-muted-foreground hover:bg-accent hover:text-foreground",
@@ -288,21 +289,21 @@ export function Navbar() {
 
                   {/* Mobile search */}
                   <form onSubmit={handleSearch} className="mb-3 flex items-center gap-2 px-3">
-                    <Search className="h-4 w-4 text-muted-foreground" />
+                    <Search className="h-4 w-4 text-muted-foreground/60" />
                     <Input
                       type="search"
                       placeholder="Search..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       aria-label="Search products"
-                      className="h-9 flex-1 rounded-full border-border bg-background px-3 text-sm"
+                      className="h-9 flex-1 rounded-full border-border/60 bg-muted/50 px-3 text-sm placeholder:text-muted-foreground/50"
                     />
                   </form>
 
                   <SheetClose asChild>
                     <Link
                       href="/account"
-                      className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                      className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                     >
                       <User className="h-4 w-4" />
                       My Account
@@ -311,7 +312,7 @@ export function Navbar() {
                   <SheetClose asChild>
                     <Link
                       href="/orders"
-                      className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                      className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                     >
                       <Package className="h-4 w-4" />
                       My Orders
@@ -321,7 +322,7 @@ export function Navbar() {
                     <button
                       type="button"
                       onClick={() => router.push("/login")}
-                      className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-destructive transition-colors hover:bg-destructive/10"
+                      className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium text-destructive transition-colors hover:bg-destructive/10"
                     >
                       <LogOut className="h-4 w-4" />
                       Sign Out
@@ -330,7 +331,7 @@ export function Navbar() {
                   <SheetClose asChild>
                     <Link
                       href="/wishlist"
-                      className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                      className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                     >
                       <Heart className="h-4 w-4" />
                       Wishlist
@@ -348,9 +349,9 @@ export function Navbar() {
                         setMobileOpen(false);
                         openCart();
                       }}
-                      className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                      className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                     >
-                      <ShoppingBag className="h-4 w-4" />
+                      <LuShoppingCart className="h-4 w-4" />
                       Cart
                       {displayCartCount > 0 && (
                         <Badge variant="destructive" className="ml-auto text-[10px]">

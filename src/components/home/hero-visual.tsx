@@ -25,9 +25,9 @@ export function HeroVisual() {
     () =>
       entered && !reduced
         ? {
-            animate: { y: [0, -12, 0] },
+            animate: { y: [0, -14, 0] },
             transition: {
-              duration: 4,
+              duration: 4.5,
               repeat: Infinity,
               ease: "easeInOut" as const,
             },
@@ -41,7 +41,7 @@ export function HeroVisual() {
       entered && !reduced
         ? [
             {
-              animate: { y: [0, -8, 0] },
+              animate: { y: [0, -10, 0] },
               transition: {
                 duration: 3.5,
                 repeat: Infinity,
@@ -49,7 +49,7 @@ export function HeroVisual() {
               },
             },
             {
-              animate: { y: [0, -10, 0] },
+              animate: { y: [0, -12, 0] },
               transition: {
                 duration: 4.5,
                 repeat: Infinity,
@@ -69,14 +69,14 @@ export function HeroVisual() {
         <m.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, ease: "easeOut" as const, delay: 0.2 }}
+          transition={{ duration: 0.8, ease: "easeOut" as const, delay: 0.3 }}
           onAnimationComplete={() => setEntered(true)}
         >
           <m.div
             {...mainFloat}
             className="relative w-full max-w-[380px] rotate-2 will-change-transform"
           >
-            <div className="relative overflow-hidden rounded-3xl bg-white/10 shadow-2xl backdrop-blur-sm">
+            <div className="relative overflow-hidden rounded-3xl bg-white/8 shadow-2xl backdrop-blur-sm ring-1 ring-white/10">
               <Image
                 src={heroVisual.mainImage}
                 alt={heroVisual.mainAlt}
@@ -93,14 +93,16 @@ export function HeroVisual() {
                 <m.div
                   key={badge.label}
                   {...badgeAnims[i]}
-                  className={`absolute ${badgePositions[i]} z-10 flex items-center gap-2 rounded-xl bg-white/90 px-4 py-2.5 shadow-lg backdrop-blur-sm will-change-transform`}
+                  className={`absolute ${badgePositions[i]} z-10 flex items-center gap-2.5 rounded-xl bg-card/90 px-4 py-3 shadow-lg ring-1 ring-border/50 backdrop-blur-sm will-change-transform`}
                 >
-                  <Icon className="h-4 w-4 text-rose" />
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary/60">
+                    <Icon className="h-4 w-4 text-rose" />
+                  </div>
                   <div>
-                    <p className="font-serif text-sm font-bold leading-tight text-neutral-900">
+                    <p className="font-serif text-sm font-bold leading-tight text-foreground">
                       {badge.value}
                     </p>
-                    <p className="font-mono text-[9px] uppercase tracking-wider text-neutral-500">
+                    <p className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
                       {badge.label}
                     </p>
                   </div>

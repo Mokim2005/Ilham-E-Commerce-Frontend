@@ -1,4 +1,5 @@
-// Filter Sidebar — category checkboxes, dual-range price slider, availability toggle. Client component.
+// Filter Sidebar — category checkboxes, dual-range price slider, availability toggle.
+// Styled with notebook-lines background and semantic tokens. Client component.
 "use client";
 
 import { useState, useEffect, useCallback, useRef, useTransition } from "react";
@@ -32,7 +33,6 @@ export function FilterSidebar({
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [isPending, startTransition] = useTransition();
 
-
   const [values, setValues] = useState<number[]>([
     minPrice ?? priceRange[0],
     maxPrice ?? priceRange[1],
@@ -63,7 +63,6 @@ export function FilterSidebar({
     [router, searchParams, priceRange],
   );
 
- 
   const debouncedPushPrice = useCallback(
     (min: number, max: number) => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -91,15 +90,17 @@ export function FilterSidebar({
   );
 
   return (
-    <div className="space-y-6">
+    <div className="notebook-lines space-y-6 rounded-2xl border border-border/50 bg-card p-5">
       {/* Categories */}
       <div>
-        <h3 className="mb-3 text-sm font-semibold text-ink">Categories</h3>
+        <h3 className="mb-3 font-serif text-sm font-bold text-foreground">
+          Categories
+        </h3>
         <div className="space-y-2.5">
           {categories.map((cat) => (
             <label
               key={cat.id}
-              className="flex items-center gap-2.5 cursor-pointer"
+              className="flex items-center gap-2.5 cursor-pointer group"
             >
               <Checkbox
                 checked={activeCategory === cat.slug}
@@ -107,21 +108,25 @@ export function FilterSidebar({
                   updateParam("category", checked ? cat.slug : null);
                 }}
               />
-              <span className="text-sm text-ink/80">{cat.name}</span>
+              <span className="text-sm text-muted-foreground transition-colors group-hover:text-foreground">
+                {cat.name}
+              </span>
             </label>
           ))}
         </div>
       </div>
 
-      <Separator />
+      <div className="rule-line" />
 
-      {/* Price Range — Updated with your customized DualRangeSlider */}
+      {/* Price Range */}
       <div>
-        <h3 className="mb-3 text-sm font-semibold text-ink">Price Range</h3>
+        <h3 className="mb-3 font-serif text-sm font-bold text-foreground">
+          Price Range
+        </h3>
         <div className="px-1 pt-4">
           <DualRangeSlider
             label
-            labelContentPos={'top'} 
+            labelContentPos={"top"}
             value={values}
             onValueChange={(newValues) => {
               if (newValues[0] != null && newValues[1] != null) {
@@ -129,27 +134,31 @@ export function FilterSidebar({
                 debouncedPushPrice(newValues[0], newValues[1]);
               }
             }}
-            min={priceRange[0]} 
-            max={priceRange[1]} 
-            step={1} 
+            min={priceRange[0]}
+            max={priceRange[1]}
+            step={1}
             formatLabel={formatPrice}
           />
         </div>
       </div>
 
-      <Separator />
+      <div className="rule-line" />
 
       {/* Availability */}
       <div>
-        <h3 className="mb-3 text-sm font-semibold text-ink">Availability</h3>
-        <label className="flex items-center gap-3 cursor-pointer">
+        <h3 className="mb-3 font-serif text-sm font-bold text-foreground">
+          Availability
+        </h3>
+        <label className="flex items-center gap-3 cursor-pointer group">
           <Switch
             checked={inStock === true}
             onCheckedChange={(checked) => {
               updateParam("instock", checked ? "true" : null);
             }}
           />
-          <span className="text-sm text-ink/80">In Stock Only</span>
+          <span className="text-sm text-muted-foreground transition-colors group-hover:text-foreground">
+            In Stock Only
+          </span>
         </label>
       </div>
     </div>

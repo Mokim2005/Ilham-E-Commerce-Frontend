@@ -14,7 +14,7 @@ export default async function Home() {
   const featuredProducts = await getFeaturedProducts(6);
 
   return (
-    <>
+    <div className="bg-green-500">
       <HeroSection />
       <CategorySection />
       <FeaturedProductsSection products={featuredProducts} />
@@ -25,6 +25,6 @@ export default async function Home() {
       <ValuePropsSection />
       <FaqSection />
       <NewsletterSection />
-    </>
+    </div>
   );
 }

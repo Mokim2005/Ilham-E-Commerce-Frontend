@@ -1,4 +1,5 @@
-// Featured Products Section — responsive grid with staggered reveal. Used on homepage.
+// Featured Products Section — premium grid with bg-muted alternating background.
+// Uses paper-texture utility for subtle depth. Client component.
 "use client";
 
 import { LazyMotion, domAnimation, m } from "framer-motion";
@@ -21,17 +22,17 @@ const gridVariants = {
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.4, ease: "easeOut" as const },
+    transition: { duration: 0.5, ease: "easeOut" as const },
   },
 };
 
 export function FeaturedProductsSection({ products }: FeaturedProductsSectionProps) {
   return (
-    <section className="bg-paper py-16 sm:py-20">
+    <section className="bg-muted/40 paper-texture py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <LazyMotion features={domAnimation}>
           <m.div
@@ -49,7 +50,7 @@ export function FeaturedProductsSection({ products }: FeaturedProductsSectionPro
 
             <m.div
               variants={gridVariants}
-              className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+              className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
             >
               {products.map((product) => (
                 <m.div key={product.id} variants={cardVariants}>
