@@ -15,7 +15,7 @@ export default async function Home() {
 
   return (
 
-    <div className="bg-gradient-to-b from-paper via-muted to-paper paper-texture min-h-screen">
+    <div className="">
       <HeroSection />
       <CategorySection />
       <FeaturedProductsSection products={featuredProducts} />

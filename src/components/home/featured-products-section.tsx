@@ -32,7 +32,7 @@ const cardVariants = {
 
 export function FeaturedProductsSection({ products }: FeaturedProductsSectionProps) {
   return (
-    <section className="bg-muted/40 paper-texture py-20 sm:py-24">
+    <section className=" paper-texture py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <LazyMotion features={domAnimation}>
           <m.div

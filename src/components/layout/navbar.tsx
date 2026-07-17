@@ -46,7 +46,6 @@ import { Badge } from "@/components/ui/badge";
 import { useWishlistStore } from "@/lib/store/wishlist-store";
 import { useCartStore } from "@/lib/store/cart-store";
 import { useUiStore } from "@/lib/store/ui-store";
-
 const navLinks = [
   { label: "Home", href: "/", icon: Home },
   { label: "Shop", href: "/shop", icon: Store },
@@ -360,6 +359,7 @@ export function Navbar() {
                       )}
                     </button>
                   </SheetClose>
+                  <Separator className="my-3" />
                 </nav>
               </SheetContent>
             </Sheet>
