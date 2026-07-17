@@ -14,7 +14,8 @@ export default async function Home() {
   const featuredProducts = await getFeaturedProducts(6);
 
   return (
-    <div className="bg-green-500">
+
+    <div className="bg-gradient-to-b from-paper via-muted to-paper paper-texture min-h-screen">
       <HeroSection />
       <CategorySection />
       <FeaturedProductsSection products={featuredProducts} />

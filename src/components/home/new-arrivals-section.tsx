@@ -21,7 +21,7 @@ export function NewArrivalsSection() {
 
   return (
     <ReactLenis root options={{ lerp: 0.1, smoothWheel: true }}>
-      <section ref={containerRef} className="relative bg-background w-full">
+      <section ref={containerRef} className="relative w-full">
         
         {/* Normal Scrolling Section Title Header — Removes sticky lock to scroll naturally */}
         <div className="w-full py-16 sm:py-20 flex justify-center items-center">

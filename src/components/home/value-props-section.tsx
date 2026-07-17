@@ -27,7 +27,7 @@ const props = [
 
 export function ValuePropsSection() {
   return (
-    <section className="border-y border-border bg-background py-10">
+    <section className="border-y border-border py-10">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <MotionSection stagger className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-4">
           {props.map((item) => {

@@ -5,7 +5,7 @@ import { promoBanner } from "@/lib/mock-data/banners";
 
 export function DiscountBannerSection() {
   return (
-    <section className="bg-foreground py-16 sm:py-20">
+    <section className="py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <MotionSection>
           <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-foreground to-foreground/80 p-8 sm:p-12">

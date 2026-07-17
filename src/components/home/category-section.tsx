@@ -4,7 +4,7 @@ import { CategoryScrollGallery } from "@/components/home/category-scroll-gallery
 
 export function CategorySection() {
   return (
-    <section className="bg-background py-16 sm:py-20">
+    <section className=" py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <MotionSection>
           <SectionHeading

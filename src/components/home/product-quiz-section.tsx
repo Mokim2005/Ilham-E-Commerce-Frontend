@@ -5,7 +5,7 @@ import { ProductQuiz } from "@/components/home/product-quiz";
 
 export function ProductQuizSection() {
   return (
-    <section className="relative overflow-hidden bg-card py-16 sm:py-20">
+    <section className="relative overflow-hidden py-16 sm:py-20">
       {/* Subtle notebook lines in background */}
       <div className="notebook-lines absolute inset-0 opacity-10" />
 
